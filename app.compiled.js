@@ -43,7 +43,7 @@ async function loadFromIDB() {
     return null;
   }
 }
-const SAVE_FIELDS = ["level", "xp", "stats", "done", "doneEx", "doneW", "doneLessons", "totalXp", "qC", "streak", "wLog", "socialLog", "weightLog", "bookTitle", "bookPages", "bookRead", "bookLog", "muscleXp", "lastDailyReset", "lastWeeklyReset", "penaltyLog", "dailyLessonDone", "liftLog", "vacation", "activeBoss", "bossHistory", "sleepLog", "workoutCalendar", "exerciseSwaps", "plankLevel"];
+const SAVE_FIELDS = ["level", "xp", "stats", "done", "doneEx", "doneW", "doneLessons", "totalXp", "qC", "streak", "wLog", "socialLog", "weightLog", "bookTitle", "bookPages", "bookRead", "bookLog", "muscleXp", "lastDailyReset", "lastWeeklyReset", "penaltyLog", "dailyLessonDone", "liftLog", "vacation", "activeBoss", "bossHistory", "sleepLog", "workoutCalendar", "exerciseSwaps", "plankLevel", "kbLevel", "agiUnlocked"];
 const DEFAULT_STATE = {
   level: 1,
   xp: 0,
@@ -97,7 +97,9 @@ const DEFAULT_STATE = {
   sleepLog: [],
   workoutCalendar: {},
   exerciseSwaps: {},
-  plankLevel: 1
+  plankLevel: 1,
+  kbLevel: 1,
+  agiUnlocked: false
 };
 
 // ─── CONSTANTS ───
@@ -244,6 +246,15 @@ const PPL = {
       finisher: true,
       repsOnly: true,
       desc: "🎯 CORE FINISHER (5-6 min). Atarnat de bara, ridica picioarele controlat pana la 90° (sau genunchii la piept daca e greu). Fara balans. Lucreaza abdomenul inferior — exact zona ta problematica. Progresezi prin REPS, nu greutate."
+    }, {
+      name: "Turkish Get-Up / Windmill",
+      sets: "3×5 fiecare parte",
+      muscle: "Mobilitate/Core",
+      rest: 60,
+      finisher: true,
+      repsOnly: true,
+      agiFinisher: true,
+      desc: "🌀 AGI FINISHER (5-8 min). NU la epuizare — e mobilitate sub incarcatura, nu forta. TURKISH GET-UP: culcat pe spate, o gantera/kettlebell sus intr-o mana, privirea mereu la ea. Te ridici pas cu pas pana in stand, apoi cobori pe acelasi drum. WINDMILL: greutatea sus intr-o mana, picioarele drepte, impinge soldul lateral si coboara cealalta mana spre podea. LUCREAZA: mobilitate umar si sold, core anti-flexie laterala, stabilitate — creste AGI. Incepe FOARTE usor (4-8kg) ca sa inveti tiparul."
     }]
   },
   3: {
@@ -344,6 +355,15 @@ const PPL = {
       rest: 60,
       finisher: true,
       desc: "🎯 CORE FINISHER (5 min). Pe banca inclinata negativ, mainile la piept sau la tample. Ridica controlat, coboara lent fara sa te lasi liber. Pentru progresie tine un disc la piept."
+    }, {
+      name: "Windmill / Turkish Get-Up",
+      sets: "3×5 fiecare parte",
+      muscle: "Mobilitate/Core",
+      rest: 60,
+      finisher: true,
+      repsOnly: true,
+      agiFinisher: true,
+      desc: "🌀 AGI FINISHER (5-8 min). NU la epuizare — mobilitate sub incarcatura. WINDMILL: greutate sus intr-o mana, privirea la ea, picioarele drepte, impinge soldul lateral si coboara cealalta mana spre podea. Revino controlat. TURKISH GET-UP: din culcat, te ridici pas cu pas cu greutatea sus, apoi cobori pe acelasi drum. LUCREAZA: mobilitate umar si sold, core anti-flexie laterala — creste AGI. Greutati mici la inceput."
     }]
   },
   5: {
@@ -412,8 +432,11 @@ const PPL = {
   }
 };
 
-// ─── NO GYM WORKOUTS (hotel / vacation / home) ───
-// 5-day routine fara echipament - bodyweight only
+// ─── NO GYM WORKOUTS (hotel / vacanta) ───
+// 5 zile: greutate corporala + benzi elastice plate (Theraband)
+// NOTA BENZI: benzile plate au rezistenta mica. Ca sa creasca dificultatea:
+// dublezi banda (2 straturi), o scurtezi (prinzi mai aproape de ancora),
+// sau treci pe banda mai tare (negru > gri > portocaliu).
 const NO_GYM = {
   1: {
     day: "Monday",
@@ -424,32 +447,32 @@ const NO_GYM = {
       name: "Push-ups",
       sets: "4×15-20",
       muscle: "Chest",
-      desc: "Standard push-ups. Hands shoulder-width, body straight, lower until chest nearly touches floor. If too easy: feet on chair (decline). Too hard: knees on floor."
+      desc: "CUM: Palmele pe podea, ceva mai larg decat umerii. Corpul o linie dreapta de la cap la calcaie, abdomen contractat. Coboara controlat pana pieptul aproape atinge podeaua, coatele la ~45° fata de corp (nu lipite, nu perpendiculare). Impinge inapoi fara sa lasi soldul sa cada. LUCREAZA: piept, triceps, deltoid anterior, core stabilizator. GRESELI: sold lasat sau ridicat, coate prea in exterior (stres pe umar), coborare incompleta. MAI GREU: picioarele pe scaun/pat (decline), sau banda pe spate trecuta pe sub palme. MAI USOR: genunchii pe podea sau palmele pe scaun (incline)."
     }, {
       name: "Pike Push-ups",
       sets: "3×8-12",
       muscle: "Shoulders",
-      desc: "Hands and feet on floor, hips up high (downward dog position). Lower head towards floor between hands, press back up. Targets shoulders heavily."
+      desc: "CUM: Din poziție de flotare, ridica soldul sus si adu picioarele spre mani pana formezi un V intors (ca 'downward dog'). Capul intre mani, privirea spre podea in spate. Coboara varful capului spre podea intre palme, apoi impinge. LUCREAZA: deltoid anterior si median, triceps — cel mai bun inlocuitor bodyweight pentru presa deasupra capului. GRESELI: sold prea jos (devine flotare normala), coborare doar din gat fara sa indoi coatele. MAI GREU: picioarele mai sus, pe scaun sau pat. MAI USOR: sold mai jos, amplitudine mai mica."
     }, {
       name: "Diamond Push-ups",
       sets: "3×8-12",
       muscle: "Triceps",
-      desc: "Hands close together forming a diamond/triangle shape under chest. Lower and press up. Best bodyweight tricep exercise."
+      desc: "CUM: Palmele lipite sub piept, degetele mari si aratatoarele formeaza un romb (diamant). Coboara pieptul spre mani cu coatele aproape de corp, apoi impinge. LUCREAZA: triceps intens (cel mai bun exercitiu de triceps fara echipament), plus pieptul interior. GRESELI: coate desfacute in laterale (pierzi tot accentul pe triceps), amplitudine scurta. MAI GREU: picioarele ridicate pe scaun. MAI USOR: genunchii pe podea, sau mainile doar apropiate (nu lipite complet)."
     }, {
-      name: "Tricep Dips on Chair",
-      sets: "3×12-15",
+      name: "Banded Tricep Extension",
+      sets: "3×15-20",
       muscle: "Triceps",
-      desc: "Sit on edge of chair, hands beside hips. Slide off, lower body bending elbows to 90°, press up. Keep elbows pointing back, not out."
+      desc: "CUM: Prinde banda in partea de sus a usii (nod la capat, usa inchisa peste el) SAU tine-o cu o mana deasupra capului si trage cu cealalta. Coatele fixe langa cap, extinde antebratele in jos/inainte pana la blocare, contracta tricepsul 1 secunda, revino lent. LUCREAZA: triceps, cel mai apropiat de pushdown-ul de la sala. GRESELI: coatele se depart de corp, folosesti umerii ca sa tragi. BANDA: dubleaz-o sau prinde mai aproape pentru mai multa tensiune. Inlocuieste dips pe scaun — mai bun pentru tricep, fara stres pe umar."
+    }, {
+      name: "Band Pull-Aparts",
+      sets: "3×15-20",
+      muscle: "Rear Delts",
+      desc: "CUM: Tine banda intinsa in fata, la nivelul pieptului, mainile la lațimea umerilor. Trage capetele in laterale pana banda atinge pieptul, strangand omoplatii. Revino foarte lent. LUCREAZA: deltoid posterior, trapez mijlociu, romboizi — exact muschii care contrabalanseaza toate impingerile si iti tin umarul sanatos. GRESELI: ridici umerii spre urechi, folosesti elan. BANDA: aici rezistenta mica e perfecta — mergi pe reps si control, nu pe forta. Cel mai valoros exercitiu cu banda pentru tine."
     }, {
       name: "Plank",
       sets: "3×60s",
       muscle: "Core",
-      desc: "Forearms on floor, body straight, brace core hard. No sagging hips, no rising butt. Breathe normally. Add 10s each session."
-    }, {
-      name: "Pseudo Planche Lean",
-      sets: "3×30s",
-      muscle: "Shoulders/Core",
-      desc: "Push-up position, lean shoulders forward over hands. Feel shoulders working hard. Builds shoulder strength and core stability."
+      desc: "CUM: Antebratele pe podea, coatele sub umeri, corpul o linie dreapta. Contracta abdomenul ca si cand ai primi un pumn, strange fesele, bagă bazinul usor sub tine (fara arcuire lombara). Respira normal. LUCREAZA: anti-extensie — abdomenul rezista tendintei spatelui de a se arcui. GRESELI: sold lasat (stres pe lombar), fund ridicat (usurezi), retinerea respiratiei. Peste 60s nu urca timpul — treci la varianta mai grea (un picior ridicat, sau coatele mai in fata). Progresia completa e in bonus quest-ul de Plank."
     }]
   },
   2: {
@@ -461,32 +484,32 @@ const NO_GYM = {
       name: "Towel Rows (Door)",
       sets: "4×12-15",
       muscle: "Back",
-      desc: "Wrap thick towel around door handle (close door first!). Lean back holding both ends, pull yourself toward door squeezing shoulder blades. Bodyweight rows substitute."
+      desc: "CUM: Prosop gros trecut peste clanta (usa INCHISA si blocata, verifica intai!). Prinde ambele capete, picioarele in fata ta, lasa-te pe spate cu bratele intinse. Trage-te spre usa ducand coatele pe langa corp si strangand omoplatii. Revino lent. LUCREAZA: lat, trapez mijlociu, romboizi, biceps. GRESELI: tragi doar din brate fara sa strangi omoplatii, corpul se indoaie la sold. MAI GREU: picioarele mai in fata (unghi mai orizontal). ATENTIE: banda nu poate inlocui asta — rezistenta ei e prea mica fata de cat tragi tu la sala (90kg+). Prosopul rămâne cea mai buna varianta la hotel."
     }, {
       name: "Inverted Rows (Table)",
       sets: "3×10-12",
       muscle: "Lats",
-      desc: "Sturdy table only! Slide under, grip table edge, body straight, pull chest to table. Test table strength FIRST. Or use 2 chairs with broomstick across."
+      desc: "CUM: Doar masa solida! Testeaza-o intai cu greutatea ta. Intra pe sub, prinde marginea, corpul drept de la cap la calcaie, trage pieptul spre masa. LUCREAZA: lat, spate mijlociu, biceps, core. GRESELI: sold lasat, tras incomplet. ALTERNATIVA daca masa e fragila: doua scaune cu o coada de matura intre ele, sau mai multe serii de Towel Rows. MAI USOR: genunchii indoiti, picioarele mai aproape."
+    }, {
+      name: "Banded Rows",
+      sets: "3×15-20",
+      muscle: "Back",
+      desc: "CUM: Banda ancorata la nivelul pieptului (nod in usa) SAU stai pe podea cu banda trecuta pe sub talpi. Trage coatele pe langa corp, strange omoplatii 1 secunda, revino lent controlat. LUCREAZA: spate mijlociu, romboizi, biceps. Nu inlocuieste tragerile grele, dar adauga volum si tensiune constanta pe contractie. GRESELI: te lasi pe spate ca sa compensezi, dai drumul brusc la revenire. BANDA: dubleaz-o sau scurteaz-o pentru mai multa rezistenta — la tine banda simpla va fi prea usoara."
     }, {
       name: "Superman Hold",
       sets: "3×30-45s",
       muscle: "Lower Back",
-      desc: "Lie face down, arms forward. Lift chest, arms, and legs off floor simultaneously. Hold position. Strengthens posterior chain entirely."
+      desc: "CUM: Intins pe burta, bratele intinse in fata. Ridica simultan pieptul, bratele si picioarele de pe podea. Tine pozitia, privirea in jos (nu pe spate). Strange fesele. LUCREAZA: erectori spinali, fesieri, hamstring superior, deltoid posterior. GRESELI: privirea in sus (comprima cervicala), ridicare prea agresiva. MAI USOR: ridica doar bratele, apoi doar picioarele, alternativ."
     }, {
-      name: "Reverse Snow Angels",
-      sets: "3×15",
+      name: "Face Pulls cu banda",
+      sets: "3×15-20",
       muscle: "Rear Delts",
-      desc: "Lie face down, arms at sides palms down. Sweep arms up over head along floor (snow angel motion). Slow and controlled — burns rear delts."
+      desc: "CUM: Banda ancorata la nivelul ochilor (nod in usa). Trage capetele spre fata, coatele sus si in exterior, mainile ajung la nivelul tamplelor cu palmele in fata. Strange omoplatii si roteste extern umerii la final. Revino lent. LUCREAZA: deltoid posterior, rotatori externi, trapez — sanatatea umarului si postura. GRESELI: tragi jos spre piept (devine row), coatele cad. Inlocuieste Reverse Snow Angels: acelasi target, cu rezistenta reala."
     }, {
-      name: "Doorway Curls",
-      sets: "3×15",
+      name: "Banded Curls",
+      sets: "3×15-20",
       muscle: "Biceps",
-      desc: "Stand in doorway, grip frame at hip height palms up. Lean back, pull yourself up using biceps. Or use heavy backpack as makeshift dumbbell."
-    }, {
-      name: "Dead Hangs (Door Frame)",
-      sets: "3×30s",
-      muscle: "Grip/Lats",
-      desc: "If door frame is solid: hang from top frame. Decompress spine, build grip. Skip if frame is fragile — use any stable pull-up bar at hotel gym."
+      desc: "CUM: Calca banda cu ambele picioare, prinde capetele cu palmele in sus. Coatele lipite de corp, ridica antebratele pana la contractie maxima, strange bicepsul, coboara foarte lent (partea excentrica e unde banda da cel mai mult). LUCREAZA: biceps, brahial. GRESELI: te lasi pe spate, coatele migreaza in fata, cobori brusc. BANDA: la tine (18-20kg gantere) o singura banda e usoara — dubleaz-o sau stai cu picioarele mai depart pentru tensiune mai mare. Inlocuieste Doorway Curls."
     }]
   },
   3: {
@@ -498,34 +521,39 @@ const NO_GYM = {
       name: "Bodyweight Squats",
       sets: "4×20-25",
       muscle: "Quads/Glutes",
-      desc: "Feet shoulder-width, sit back and down to parallel. Drive through heels. High volume since no weight — go slow on negative for more burn."
+      desc: "CUM: Picioarele la lațimea umerilor, varfurile usor in exterior. Coboara ducand soldul in spate si jos, pana coapsele sunt paralele cu podeaua (sau mai jos daca poti). Genunchii urmeaza direcția varfurilor. Impinge prin calcaie. LUCREAZA: quadriceps, fesieri, adductori. GRESELI: genunchii cad spre interior, calcaiele se ridica, spatele se rotunjeste jos. MAI GREU: coboara in 3 secunde (tempo), sau banda peste umeri/sub talpi. Volum mare aici, fiindca nu ai greutate."
     }, {
       name: "Bulgarian Split Squats",
-      sets: "3×12 ea",
+      sets: "3×12 fiecare",
       muscle: "Quads/Glutes",
-      desc: "Back foot on chair/bed, front foot 60cm away. Lower until back knee nearly touches floor. Brutal exercise — single leg builds serious strength."
+      desc: "CUM: Piciorul din spate sprijinit pe scaun/pat, cel din fata la ~60cm in fata. Coboara drept in jos pana genunchiul din spate aproape atinge podeaua. Toata greutatea pe piciorul din fata, impinge prin calcai. LUCREAZA: quadriceps si fesier al piciorului din fata, plus echilibru si stabilitate de sold. Brutal — un picior odata construieste forta reala. GRESELI: te apleci mult in fata, piciorul din fata prea aproape (genunchiul trece mult peste varf). MAI USOR: tine-te cu o mana de perete pentru echilibru."
     }, {
       name: "Walking Lunges",
-      sets: "3×20 steps",
+      sets: "3×20 pasi",
       muscle: "Quads/Glutes",
       rest: 90,
-      desc: "Step forward into deep lunge, back knee almost touching floor. Push off front heel into next step. Hotel hallways are perfect for this."
+      desc: "CUM: Pas mare in fata, coboara pana ambii genunchi sunt la ~90°, genunchiul din spate aproape de podea. Impinge prin calcaiul din fata si pasesti direct in urmatoarea fandare. Torsul drept, privirea in fata. LUCREAZA: quadriceps, fesieri, hamstring, plus stabilitate. Holurile de hotel sunt perfecte. GRESELI: pas prea scurt (genunchiul depaseste mult varful), torsul aplecat, dezechilibru. MAI GREU: tine rucsacul plin in mana sau pe spate."
+    }, {
+      name: "Banded Good Mornings",
+      sets: "3×15-20",
+      muscle: "Hams/Glutes",
+      desc: "CUM: Calca banda, treci celalalt capat peste ceafa/umeri. Genunchii usor indoiti si FIXI, impinge soldul in spate si coboara torsul spre paralel cu podeaua, cu spatele drept. Simti intinderea in hamstring. Revino strangand fesele. LUCREAZA: hamstring si fesieri (hinge — acelasi tipar ca RDL-ul tau de 97.5kg). GRESELI: indoi genunchii ca la squat, rotunjesti spatele. BANDA: dubleaz-o pentru tensiune reala. Adaugat pentru hamstring — inainte aveai doar glute bridges."
     }, {
       name: "Single-leg Glute Bridges",
-      sets: "3×15 ea",
+      sets: "3×15 fiecare",
       muscle: "Glutes/Hams",
-      desc: "Lie on back, one foot on floor, other leg lifted straight. Push hips up squeezing glute hard. Lower with control. ⭐ HAMS PRIORITY."
+      desc: "CUM: Intins pe spate, un picior cu talpa pe podea (genunchi indoit), celalalt intins in sus. Impinge soldul in sus prin calcaiul de sprijin, strange fesa tare 1 secunda la varf, coboara controlat. LUCREAZA: fesier mare, hamstring, plus corectare de asimetrii. GRESELI: impingi din lombar in loc de fesa (te arcuiesti), amplitudine mica. Concentreaza-te sa simti fesa, nu spatele."
     }, {
       name: "Calf Raises",
       sets: "5×30",
       muscle: "Calves",
       rest: 60,
-      desc: "⭐ CALVES PRIORITY. High reps to compensate no weight. Stand on edge of step (or thick book). Rise on toes max height, lower below. Both legs together OR single-leg for extra challenge."
+      desc: "CUM: Pe marginea unei trepte sau a unei cărti groase, doar varfurile pe suport. Coboara calcaiele sub nivel (intindere completa), apoi ridica-te maxim pe varfuri si tine 1 secunda sus. LUCREAZA: gastrocnemian si solear. Reps mari fiindca nu ai greutate. GRESELI: sarituri rapide fara amplitudine, nu cobori sub nivel. MAI GREU: pe un picior odata. PRIORITATE: gambele sunt cea mai slaba grupa la tine (89 XP) — nu sari peste."
     }, {
       name: "Wall Sit",
       sets: "3×60-90s",
       muscle: "Quads",
-      desc: "Back flat against wall, slide down until thighs parallel to floor (90° at knees). Hold. Quads burn intensely. Increase time each session."
+      desc: "CUM: Spatele lipit complet de perete, aluneca in jos pana coapsele sunt paralele cu podeaua (90° la genunchi). Genunchii deasupra calcaielor, nu mai in fata. Tine. LUCREAZA: quadriceps izometric — arde intens. GRESELI: sold prea sus (prea usor), sprijin cu mainile pe genunchi. Creste timpul cu 10s la fiecare sesiune."
     }]
   },
   4: {
@@ -537,32 +565,32 @@ const NO_GYM = {
       name: "Burpees",
       sets: "5×10",
       muscle: "Full Body",
-      desc: "Squat → hands down → jump back to plank → push-up → jump feet back → jump up. The king of bodyweight conditioning. Brutal but efficient."
+      desc: "CUM: Din stand, ghemuit si palmele pe podea, sari cu picioarele in spate in plank, o flotare, sari cu picioarele inapoi la mani, ridica-te si sari in sus cu bratele deasupra. LUCREAZA: tot corpul plus conditie cardiovasculara — regele exercitiilor bodyweight. GRESELI: soldul cade in partea de plank, aterizare pe picioare drepte (absoarbe cu genunchii). MAI USOR: fara saritura finala si fara flotare (step-back burpee). La 105kg, prioritizeaza aterizarea moale."
     }, {
       name: "Mountain Climbers",
       sets: "4×30s",
       muscle: "Core/Cardio",
-      desc: "Plank position, alternate driving knees to chest fast. 30 seconds = nuclear conditioning. Keep hips low, don't bounce."
+      desc: "CUM: Poziție de plank pe palme. Adu alternativ genunchii spre piept, rapid, fara sa ridici soldul. Umerii rămân deasupra palmelor. LUCREAZA: core (anti-rotatie), flexori de sold, plus cardio serios. GRESELI: soldul urca si coboara, prea rapid fara control. MAI USOR: incetineste, du genunchiul controlat."
     }, {
       name: "Jump Squats",
       sets: "4×15",
       muscle: "Quads/Power",
-      desc: "Squat down, explode up jumping as high as possible. Land soft, immediately into next rep. Builds power and burns serious calories."
+      desc: "CUM: Squat normal, apoi exploziv sari cat de sus poti. Aterizeaza moale pe toata talpa, absorbind cu genunchii, si intra direct in urmatorul squat. LUCREAZA: quadriceps, fesieri, putere explosiva, plus ardere calorica mare. GRESELI: aterizare rigida pe picioare drepte, genunchii cad spre interior. La greutatea ta, fa-le controlat si daca simti genunchii, inlocuieste cu squat normal in tempo lent."
     }, {
       name: "Plank to Push-up",
       sets: "3×10",
       muscle: "Core/Chest",
-      desc: "Start in forearm plank. Press up to one hand, then other = full push-up position. Reverse back to plank. Alternate leading arm each rep."
+      desc: "CUM: Pornesti in plank pe antebrate. Ridica-te pe o palma, apoi pe cealalta, pana ajungi in poziție de flotare. Coboara inapoi pe antebrate, alternand bratul care conduce. LUCREAZA: core anti-rotatie (partea grea — sa nu te legeni), piept, triceps, umeri. GRESELI: soldul se leagana lateral, fund ridicat. MAI USOR: genunchii pe podea."
     }, {
       name: "High Knees",
       sets: "4×30s",
       muscle: "Cardio",
-      desc: "Run in place driving knees to hip height. Pump arms. 30 seconds full-out, 30 sec rest. Phenomenal cardio without going outside."
+      desc: "CUM: Alergare pe loc, ducand genunchii pana la nivelul soldului. Pompeaza bratele. Aterizare pe pingea, nu pe calcai. LUCREAZA: cardio intens, flexori de sold, gambe. 30s all-out, 30s pauza. GRESELI: genunchii prea jos, aterizare grea pe calcaie. MAI USOR: mers cu genunchii sus, fara alergare."
     }, {
       name: "Russian Twists",
-      sets: "3×30 reps",
+      sets: "3×30",
       muscle: "Obliques",
-      desc: "Sit, lean back 45°, feet up. Twist torso side to side touching floor. Hold a heavy book/water bottle for resistance."
+      desc: "CUM: Sezand, torsul inclinat pe spate ~45°, picioarele ridicate sau talpile pe podea. Roteste torsul stanga-dreapta, ducand mainile langa sold. Rotatia vine din tors, nu din brate. LUCREAZA: obliqui, core rotational. GRESELI: doar bratele se mișca, spatele rotunjit, prea rapid. MAI GREU: o carte grea sau bidonul de apa in mani, picioarele ridicate de pe podea."
     }]
   },
   5: {
@@ -574,32 +602,32 @@ const NO_GYM = {
       name: "Run/Walk Outside",
       sets: "30-40 min",
       muscle: "Cardio",
-      desc: "Steady pace Zone 2 (can hold conversation). Even hotel treadmill works. Maintains your cardio base while you're traveling. NOT all-out sprints."
+      desc: "CUM: Ritm constant Zona 2 — poti purta o conversatie fara sa gafai. Mers rapid, jogging usor, sau banda din sala hotelului. LUCREAZA: baza aerobica, arde grasime, tine cardio-ul in forma cat esti in vacanta. NU sprinturi maximale — asta e volum, nu intensitate. La greutatea ta, mersul rapid in panta e mai bun pentru articulatii decat alergarea."
     }, {
       name: "Hollow Hold",
       sets: "3×30-45s",
       muscle: "Core",
-      desc: "Lie on back, lift legs and shoulders off floor. Lower back PRESSED into floor. Banana shape held. Toughest core exercise that exists."
+      desc: "CUM: Intins pe spate. Lipeste lombarul de podea (asta e cheia — contracta abdomenul si bagă buricul spre coloana). Ridica umerii si capul usor, picioarele intinse la unghi mic, bratele pe langa urechi. Corpul in forma de banana. Respira controlat. LUCREAZA: tot peretele abdominal, anti-extensie — cel mai bun exercitiu de core fara echipament. GRESELI: lombarul se ridica de pe podea (atunci ai ieșit din exercitiu). MAI USOR: genunchii la piept (tuck), apoi un picior intins, apoi ambele."
     }, {
       name: "Bicycle Crunches",
-      sets: "3×30 reps",
+      sets: "3×30",
       muscle: "Core/Obliques",
-      desc: "On back, elbows behind head. Bring opposite elbow to opposite knee, alternating. Slow and controlled — quality over speed."
+      desc: "CUM: Pe spate, mainile usor la ceafa (nu tragi de cap), picioarele ridicate. Adu cotul opus spre genunchiul opus, extinzand celalalt picior. Alterneaza lent si controlat. LUCREAZA: drept abdominal, obliqui. GRESELI: tragi de cap cu mainile, mergi prea rapid, nu roteste torsul (doar coatele). Calitate peste viteza."
     }, {
       name: "Leg Raises",
       sets: "3×15-20",
       muscle: "Lower Abs",
-      desc: "Lie flat, hands at sides. Raise legs to vertical, lower slowly without touching floor. Lower abs nightmare — but they grow."
+      desc: "CUM: Intins pe spate, mainile pe langa corp sau sub sold pentru sprijin. Ridica picioarele intinse pana la vertical, apoi coboara LENT fara sa atingi podeaua. Lombarul rămâne lipit. LUCREAZA: abdomen inferior — exact zona ta problematica (WHR android). GRESELI: lombarul se arcuiește la coborare, folosesti elan. MAI USOR: genunchii indoiti, sau coboara doar pana la 45°."
     }, {
       name: "Side Plank",
-      sets: "3×45s ea side",
+      sets: "3×45s fiecare parte",
       muscle: "Obliques",
-      desc: "On forearm, body straight on side. Hips lifted, hold. Switch sides. Anti-lateral flexion = serious oblique work."
+      desc: "CUM: Pe o parte, sprijin pe antebrat, cotul sub umar. Ridica soldul pana corpul e o linie dreapta din profil. Tine. Schimba partea. LUCREAZA: obliqui, anti-flexie laterala, stabilitate de sold. GRESELI: soldul cade, corpul se rotește in fata sau in spate. MAI USOR: genunchiul de jos pe podea."
     }, {
-      name: "Glute Bridges",
-      sets: "3×20",
-      muscle: "Glutes",
-      desc: "On back, knees bent, feet flat. Drive hips up squeezing glutes hard at top. Hold 1 sec. Active recovery for posterior chain."
+      name: "Pallof Press cu banda",
+      sets: "3×12 fiecare parte",
+      muscle: "Core Anti-Rotatie",
+      desc: "CUM: Banda ancorata la nivelul pieptului, lateral fata de tine (nod in clanta). Stai perpendicular pe banda, prinde-o cu ambele mani la piept. Impinge bratele drept in fata si REZISTA tendintei benzii de a-ti roti torsul. Tine 2 secunde intins, revino. LUCREAZA: core anti-rotatie — stabilitate profunda, exact ce lipseste din programul tau. GRESELI: torsul se rotește, soldul se mișca, impingi cu umerii ridicati. Aici rezistenta mica a benzii e perfecta. Unul dintre cele mai valoroase exercitii de core."
     }]
   },
   6: {
@@ -778,6 +806,23 @@ const BONUS_Q = [{
   stat: "VIT",
   xp: 20,
   icon: "🧊"
+}, {
+  id: "kettlebell",
+  label: "Kettlebell Pavel",
+  stat: "VIT",
+  xp: 35,
+  icon: "🔔",
+  days: [6],
+  kbProgression: true,
+  desc: "Stil Pavel: daca poti 10 reps, fa 5. NU la epuizare. 20-25 min."
+}, {
+  id: "swimsauna",
+  label: "Inot + Sauna",
+  stat: "VIT",
+  xp: 30,
+  icon: "🏊",
+  days: [6],
+  desc: "30-45 min inot ritm confortabil (NU cursa) + sauna. Recuperare activa: zero impact pe articulatii, mobilitate umar, core postural. Hidratare buna dupa sauna."
 }];
 
 // Plank progression - built-in 4 levels. Cresti NIVELUL, nu timpul peste 60s.
@@ -805,6 +850,34 @@ const PLANK_LEVELS = [{
   target: "45-60s",
   desc: "Cu vesta cu greutate sau disc pe spate. De AICI cresti GREUTATEA, nu timpul. Progressive overload real.",
   next: "Nivel maxim - creste greutatea progresiv"
+}];
+
+// Kettlebell Pavel — progresie pe 4 niveluri, se deblocheaza treptat.
+// Stil Pavel: nu la epuizare. Daca poti 10 reps, fa 5.
+const KB_LEVELS = [{
+  lvl: 1,
+  name: "Swings + Windmill",
+  target: "Swings 5×10 · Windmill 3×5/parte",
+  desc: "SWING: e hinge, NU squat. Soldul in spate, kettlebell-ul intre picioare, apoi explozie din sold si fese — bratele doar ghideaza, nu ridica. Se opreste la nivelul pieptului. WINDMILL: kettlebell sus intr-o mana, privirea la el, impinge soldul lateral si coboara cealalta mana spre podea cu picioarele drepte. Mobilitate umar + sold, anti-flexie laterala (da AGI).",
+  next: "Dupa 2-3 sambete, cand tiparul de hinge e sigur → Nivel 2"
+}, {
+  lvl: 2,
+  name: "+ Clean & Press",
+  target: "Swings 5×10 · Windmill 3×5 · C&P 3×5/parte",
+  desc: "CLEAN: din swing, ghideaza kettlebell-ul in poziție de rack (la piept, cotul lipit) fara sa-l lasi sa loveasca antebratul. PRESS: impinge deasupra capului, blocheaza cotul, coboara controlat. Forta pe umeri si triceps, plus core stabilizator.",
+  next: "Cand C&P e curat pe ambele parti → Nivel 3"
+}, {
+  lvl: 3,
+  name: "+ Renegade Rows",
+  target: "Toate 4 miscari",
+  desc: "RENEGADE ROW: poziție de flotare cu mainile pe kettlebell-uri (sau gantere). Trage unul spre coasta fara sa lasi soldul sa se roteasca. Plank + tras — mai greu decat pare. La core 141 XP, incepe usor sau cu genunchii pe podea.",
+  next: "Cand toate 4 sunt solide → Nivel 4"
+}, {
+  lvl: 4,
+  name: "Complex complet",
+  target: "4 miscari, greutate mai mare",
+  desc: "Toate 4 in circuit, cu kettlebell mai greu. Tot in stil Pavel: reps mici, fara epuizare, calitate maxima. De aici cresti greutatea, nu volumul.",
+  next: "Nivel maxim — creste greutatea kettlebell-ului"
 }];
 
 // Daily podcast rotation — cycles through categories
@@ -1015,7 +1088,7 @@ const MUSCLE_GROUPS = [{
   key: "core",
   name: "Core",
   icon: "🔥",
-  exercises: ["Cable Crunches", "Decline Sit-ups", "Hanging Leg Raises", "Hollow Hold", "Hollow Body Hold", "Plank", "Weighted Plank", "Russian Twists", "Ab Wheel / Plank"]
+  exercises: ["Cable Crunches", "Decline Sit-ups", "Hanging Leg Raises", "Hollow Hold", "Hollow Body Hold", "Plank", "Weighted Plank", "Russian Twists", "Ab Wheel / Plank", "Turkish Get-Up / Windmill", "Windmill / Turkish Get-Up", "Pallof Press cu banda", "Side Plank", "Leg Raises", "Bicycle Crunches"]
 }, {
   key: "cardio",
   name: "Cardio",
@@ -1826,6 +1899,44 @@ const BOSS_LIBRARY = [{
     icon: "🪽"
   }],
   lore: "Aripile de otel se forjeaza lateral, o ridicare pura pe rand."
+}, {
+  id: "agi_djinn",
+  name: "The Bound Djinn",
+  emoji: "🌀",
+  theme: "Chains of Stiffness",
+  description: "Elibereaza mobilitatea: creste AGI prin Turkish Get-Up, Windmill si kettlebell.",
+  target: {
+    type: "muscleXp",
+    muscle: "cardio",
+    amount: 0,
+    statTarget: "AGI",
+    statAmount: 20
+  },
+  durationDays: 28,
+  reward: {
+    xp: 230,
+    badge: "Chain Breaker"
+  },
+  bossQuests: [{
+    id: "bq_tgu",
+    label: "Turkish Get-Up (3x5/parte)",
+    stat: "AGI",
+    xp: 15,
+    icon: "🌀"
+  }, {
+    id: "bq_windmill",
+    label: "Windmill (3x5/parte)",
+    stat: "AGI",
+    xp: 15,
+    icon: "🌬️"
+  }, {
+    id: "bq_kb_sat",
+    label: "Kettlebell sambata (stil Pavel)",
+    stat: "AGI",
+    xp: 12,
+    icon: "🔔"
+  }],
+  lore: "Djinnul e prizonier in propriile lanturi de rigiditate. Fiecare miscare controlata slabeste o veriga."
 }];
 
 // ─── MOBILITY DATA (with images & YouTube links) ───
@@ -3179,6 +3290,8 @@ function App() {
       coldshower: [],
       nosugar: [],
       farmercarry: ["core"],
+      kettlebell: ["core"],
+      swimsauna: ["cardio"],
       weightedplank: ["core"],
       calfblitz: ["calves"],
       extrardl: ["hamstrings", "glutes"],
@@ -3697,7 +3810,7 @@ function App() {
     if (!vPPLraw || !vPPLraw.exercises) return vPPLraw;
     const swaps = g.current.exerciseSwaps || {};
     let changed = false;
-    const exercises = vPPLraw.exercises.map(ex => {
+    const exercises = vPPLraw.exercises.filter(ex => !ex.agiFinisher || g.current.agiUnlocked).map(ex => {
       const newName = swaps[`${todayStr}_${ex.name}`];
       if (newName && newName !== ex.name) {
         changed = true;
@@ -4729,8 +4842,12 @@ function App() {
     }, "No bonus quests today \u2014 recovery focus \uD83D\uDCA4");
     return todaysBonus.map(q => {
       const isPlank = q.progression && q.id === "weightedplank";
-      const pLvl = g.current.plankLevel || 1;
-      const pInfo = PLANK_LEVELS[Math.min(pLvl, PLANK_LEVELS.length) - 1];
+      const isKb = q.kbProgression && q.id === "kettlebell";
+      const hasProg = isPlank || isKb;
+      const LVLS = isKb ? KB_LEVELS : PLANK_LEVELS;
+      const lvlKey = isKb ? "kbLevel" : "plankLevel";
+      const pLvl = (isKb ? g.current.kbLevel : g.current.plankLevel) || 1;
+      const pInfo = LVLS[Math.min(pLvl, LVLS.length) - 1];
       return /*#__PURE__*/React.createElement("div", {
         key: q.id
       }, /*#__PURE__*/React.createElement("button", {
@@ -4741,10 +4858,10 @@ function App() {
           gap: 10,
           width: "100%",
           padding: "10px 12px",
-          marginBottom: isPlank ? 0 : 4,
+          marginBottom: hasProg ? 0 : 4,
           background: done.includes(q.id) ? "rgba(59,130,246,.08)" : "rgba(255,255,255,.02)",
           border: done.includes(q.id) ? "1px solid rgba(59,130,246,.3)" : "1px solid rgba(255,255,255,.06)",
-          borderRadius: isPlank ? "7px 7px 0 0" : 7,
+          borderRadius: hasProg ? "7px 7px 0 0" : 7,
           cursor: "pointer",
           textAlign: "left",
           color: "inherit",
@@ -4782,19 +4899,19 @@ function App() {
           color: done.includes(q.id) ? "#64748b" : "#e2e8f0",
           textDecoration: done.includes(q.id) ? "line-through" : "none"
         }
-      }, q.label, isPlank ? ` — Lvl ${pLvl}: ${pInfo.name} (${pInfo.target})` : q.hold ? " (3×30s)" : ""), q.desc && /*#__PURE__*/React.createElement("div", {
+      }, q.label, hasProg ? ` — Lvl ${pLvl}: ${pInfo.name}` : q.hold ? " (3×30s)" : ""), q.desc && /*#__PURE__*/React.createElement("div", {
         style: {
           fontSize: 8,
           color: "#475569",
           marginTop: 1
         }
-      }, isPlank ? pInfo.desc : q.desc), /*#__PURE__*/React.createElement("div", {
+      }, hasProg ? `${pInfo.target} · ${pInfo.desc}` : q.desc), /*#__PURE__*/React.createElement("div", {
         style: {
           fontSize: 9,
           color: "#475569",
           marginTop: 1
         }
-      }, "+", q.xp, "XP \xB7 ", q.stat, q.hold ? " · secunde" : ""))), isPlank && /*#__PURE__*/React.createElement("div", {
+      }, "+", q.xp, "XP \xB7 ", q.stat, q.hold ? " · secunde" : ""))), hasProg && /*#__PURE__*/React.createElement("div", {
         style: {
           display: "flex",
           alignItems: "center",
@@ -4813,12 +4930,12 @@ function App() {
           color: "#a16207",
           flex: 1
         }
-      }, "🎯 ", pInfo.next), pLvl < PLANK_LEVELS.length && /*#__PURE__*/React.createElement("button", {
+      }, "🎯 ", pInfo.next), pLvl < LVLS.length && /*#__PURE__*/React.createElement("button", {
         onClick: () => {
           update({
-            plankLevel: pLvl + 1
+            [lvlKey]: pLvl + 1
           });
-          setNotif(`🪨 Plank → Nivel ${pLvl + 1}: ${PLANK_LEVELS[pLvl].name}`);
+          setNotif(`${q.icon} ${q.label} → Nivel ${pLvl + 1}: ${LVLS[pLvl].name}`);
         },
         style: {
           fontSize: 8,
@@ -4834,9 +4951,9 @@ function App() {
       }, "NIVEL URMATOR ▸"), pLvl > 1 && /*#__PURE__*/React.createElement("button", {
         onClick: () => {
           update({
-            plankLevel: pLvl - 1
+            [lvlKey]: pLvl - 1
           });
-          setNotif(`🪨 Plank → Nivel ${pLvl - 1}`);
+          setNotif(`${q.icon} ${q.label} → Nivel ${pLvl - 1}`);
         },
         style: {
           fontSize: 8,
@@ -4985,7 +5102,48 @@ function App() {
       textAlign: "center",
       letterSpacing: 1
     }
-  }, "\uD83C\uDFD6\uFE0F VACATION MODE \u2014 Hotel/Bodyweight workouts active"), /*#__PURE__*/React.createElement("div", {
+  }, "\uD83C\uDFD6\uFE0F VACATION MODE \u2014 Hotel/Bodyweight workouts active"), !vacation && !g.current.agiUnlocked && /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      update({
+        agiUnlocked: true
+      });
+      setNotif("\uD83C\uDF00 AGI Finisher deblocat pe Marti si Joi");
+    },
+    style: {
+      width: "100%",
+      padding: "8px 12px",
+      marginBottom: 8,
+      background: "rgba(168,85,247,.08)",
+      border: "1px dashed rgba(168,85,247,.35)",
+      borderRadius: 7,
+      color: "#a855f7",
+      fontSize: 9,
+      cursor: "pointer",
+      fontFamily: "'Courier New',monospace",
+      textAlign: "left"
+    }
+  }, "\uD83C\uDF00 AGI FINISHER (blocat) \u2014 Turkish Get-Up / Windmill pe Marti + Joi. Invata tiparul intai sambata la kettlebell, apoi apasa aici sa deblochezi."), !vacation && g.current.agiUnlocked && /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      if (confirm("Blochezi din nou AGI Finisher?")) {
+        update({
+          agiUnlocked: false
+        });
+        setNotif("AGI Finisher blocat");
+      }
+    },
+    style: {
+      width: "100%",
+      padding: "5px 12px",
+      marginBottom: 8,
+      background: "rgba(168,85,247,.05)",
+      border: "1px solid rgba(168,85,247,.2)",
+      borderRadius: 7,
+      color: "#7e22ce",
+      fontSize: 8,
+      cursor: "pointer",
+      fontFamily: "'Courier New',monospace"
+    }
+  }, "\uD83C\uDF00 AGI Finisher activ \u00B7 tap pentru a bloca"), /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
       gap: 3,
