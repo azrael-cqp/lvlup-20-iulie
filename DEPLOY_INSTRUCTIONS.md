@@ -12,65 +12,72 @@
 4. Commit → asteapta 2-3 min → Safari privat / clear cache
 5. Datele tale (IndexedDB) raman intacte
 
-## CHANGELOG — Update 2 August 2026
+## CHANGELOG — Update 13 August 2026
 
-### 1. VACANTA: benzi elastice in zilele de hotel
-Benzile tale sunt plate (Theraband, 3 niveluri). Rezistenta lor e mica, deci
-NU inlocuiesc tragerile grele (tragi 90-100kg la sala). Le-am folosit acolo
-unde sunt chiar bune:
+### 1. Somn: ore cu zecimale
+Campul era `type="number"` cu `step="0.5"`, de aceea iOS te forta la
+jumatati de ora. Acum e camp text cu tastatura decimala: poti pune 7.2,
+6.8, orice. Reparat in ambele locuri (tab BODY si modalul de reminder).
 
-- **Luni PUSH**: Banded Tricep Extension (inlocuieste dips pe scaun),
-  Band Pull-Aparts (nou — sanatate umar)
-- **Marti PULL**: Banded Rows (adaugat), Face Pulls cu banda (inlocuieste
-  Reverse Snow Angels), Banded Curls (inlocuieste Doorway Curls).
-  Towel Rows + Inverted Rows PASTRATE — banda nu le poate inlocui.
-- **Miercuri LEGS**: Banded Good Mornings (nou — hamstring, aveai doar glute bridges)
-- **Vineri CORE**: Pallof Press cu banda (nou — core anti-rotatie)
+### 2. Readiness Score (Oura) + trend
+- Camp nou optional (0-100) langa ore si rating, in ambele locuri.
+- Panou nou in BODY: media pe 7 zile, diferenta fata de saptamana
+  anterioara (▲/▼), si grafic cu barele ultimelor 7 zile.
+- Cod culori: 85+ verde (excelent) · 70-84 albastru (ok) · sub 70
+  portocaliu (recuperare slaba).
 
-Nota in cod: pentru mai multa rezistenta dublezi banda, o scurtezi, sau treci
-pe banda mai tare.
+### 3. Plank unificat
+"Weighted Plank" ca exercitiu separat a disparut complet. In ziua de
+Miercuri (LEGS) finisher-ul e acum "Plank" — acelasi exercitiu cu
+progresia pe 4 niveluri din bonus quest. Un singur plank, un singur
+nivel, peste tot. Se logheaza in secunde, fara camp de greutate.
 
-### 2. VACANTA: explicatii complete in romana la fiecare exercitiu
-Toate 31 exercitiile de hotel au acum descriere structurata:
-**CUM** (execuție pas cu pas) · **LUCREAZA** (ce muschi) · **GRESELI**
-(ce sa evitezi) · **MAI GREU / MAI USOR** (cum ajustezi).
-Nu mai ai nevoie sa cauti pe net in camera de hotel.
+### 4. Scos Cold Shower din bonus quests
 
-### 3. Hanging Leg Raises — reps, fara greutate
-Era deja facut in build-ul din 19 Iulie (doar nu era deployat). Campul de kg
-e ascuns, se logheaza doar reps.
+### 5. Hanging Leg Raises — confirmat doar reps, fara greutate
 
-### 4. Bonus sambata: Kettlebell Pavel (progresie 4 niveluri)
-Apare doar sambata. Se deblocheaza treptat, cu buton manual "NIVEL URMATOR":
-- **Lvl 1**: Swings + Windmill
-- **Lvl 2**: + Clean & Press
-- **Lvl 3**: + Renegade Rows
-- **Lvl 4**: complex complet, greutate mai mare
-Stil Pavel scris in fiecare nivel: daca poti 10 reps, fa 5. NU la epuizare.
+### 6. Boss quests = actiuni independente (schimbare mare)
+Inainte, boss quest-urile erau indicatii de tehnica pentru exercitii din
+PPL ("Rows — strange omoplatii 1s"), deci nu puteai avansa decat in ziua
+aia si nu adaugau nimic in plus.
 
-### 5. Bonus sambata: Inot + Sauna
-30-45 min ritm confortabil + sauna. VIT/cardio. Recuperare activa in ziua
-de rest, zero impact pe articulatii.
+Acum toate 35 sunt actiuni de sine statatoare, pe care le poti face
+acasa sau in plus la sala, in ORICE zi. Exemple:
+- "Band Rows (3x20, strange omoplatii) — cu banda"
+- "Push-ups (3x max, pauza 1s jos) — acasa"
+- "Leg Raises pe podea (3x20) — acasa"
+- "Dead Hang (3x max) SAU Band Pull-Aparts (3x25)"
+- "Monster Walks cu banda (3x20 pasi) — cu banda"
 
-### 6. AGI Finisher pe Marti + Joi (BLOCAT initial)
-Turkish Get-Up / Windmill, 3×5 pe parte, 5-8 min, NU la epuizare.
-- Apare in tab PPL ca buton violet punctat: "AGI FINISHER (blocat)"
-- Il deblochezi cand vrei, cu un tap. Recomandat: dupa 2-3 sambete de
-  kettlebell, cand tiparul e sigur.
-- Se poate bloca din nou oricand.
-- Asta e sursa ta de AGI (stat-ul era blocat la 15 de cand am scos LIFE/FLEX).
+### 7. Bosii invinsi dispar din lista
+Odata invins, un boss nu mai apare in AVAILABLE BOSSES. Rămâne doar in
+BATTLE HISTORY (care oricum arata ultimele 5).
 
-### 7. Boss nou: The Bound Djinn (AGI)
-+20 AGI in 28 zile, alimentat din TGU, Windmill si kettlebell.
-Acum 19 bosi in total.
+### 8. Boss deload scos
+"The Deload Phoenix" eliminat din biblioteca — necesita adaptarea
+intregului PPL. Revenim daca schimbam programul.
+
+### 9. Bosi noi (4 adaugati — acum 22 in total)
+- 💪 Iron Warden — biceps (+55 XP / 21 zile)
+- 🔱 Bronze Sentinel — triceps (+55 XP / 21 zile)
+- 👑 Crowned Monarch — glutes (+60 XP / 21 zile)
+- 🌙 Dream Keeper — streak 21 zile, focus pe somn si Readiness
+
+### 10. Weight log editabil
+Fiecare cantarire din lista are acum doua butoane:
+- **✎** editeaza (greutate, BF%, masa musculara)
+- **✕** sterge (cu confirmare)
+
+## DE FACUT IMEDIAT DUPA DEPLOY
+Corecteaza cantarirea din 13 Aug: e salvata gresit ca **115.15kg**,
+valoarea reala e **105.15kg**. Tab BODY → gaseste randul din 13/08 →
+apasa ✎ → pune 105.15. Altfel graficul arata un salt fals de 9kg si
+faza-2 (tinta BF 20%) se comporta ciudat.
 
 ## Verificare dupa deploy
-- Tab PPL: apare butonul violet "AGI FINISHER (blocat)" — NU il deblochezi inca
-- Activeaza VACATION MODE → tab PPL arata zilele de hotel cu benzi si
-  explicatii detaliate in romana
-- Sambata la BONUS: apar Kettlebell Pavel (Lvl 1) si Inot + Sauna
-- Marti Pull: Hanging Leg Raises are doar camp de reps
-
-## In vacanta
-Activeaza VACATION MODE inainte sa pleci: zero penalizari, XP-ul se castiga
-normal, streak-ul continua. Antrenamentele de hotel inlocuiesc automat PPL-ul.
+- BODY → Sleep Tracker: poti scrie 7.2 la ore; apare campul Readiness
+- BODY: dupa 2 zile cu Readiness logat, apare panoul cu trend
+- PPL Miercuri: finisher-ul e "Plank" (nu Weighted Plank), doar secunde
+- BOSS: bosii invinsi nu mai apar in lista; boss quest-urile sunt
+  actiuni de facut acasa
+- BODY → lista cantaririlor: butoanele ✎ si ✕ pe fiecare rand
