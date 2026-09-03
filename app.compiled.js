@@ -43,7 +43,7 @@ async function loadFromIDB() {
     return null;
   }
 }
-const SAVE_FIELDS = ["level", "xp", "stats", "done", "doneEx", "doneW", "doneLessons", "totalXp", "qC", "streak", "wLog", "socialLog", "weightLog", "bookTitle", "bookPages", "bookRead", "bookLog", "muscleXp", "lastDailyReset", "lastWeeklyReset", "penaltyLog", "dailyLessonDone", "liftLog", "vacation", "activeBoss", "bossHistory", "sleepLog", "workoutCalendar", "exerciseSwaps", "plankLevel", "kbLevel", "agiUnlocked"];
+const SAVE_FIELDS = ["level", "xp", "stats", "done", "doneEx", "doneW", "doneLessons", "totalXp", "qC", "streak", "wLog", "socialLog", "weightLog", "bookTitle", "bookPages", "bookRead", "bookLog", "muscleXp", "lastDailyReset", "lastWeeklyReset", "penaltyLog", "dailyLessonDone", "liftLog", "vacation", "activeBoss", "bossHistory", "sleepLog", "workoutCalendar", "exerciseSwaps", "plankLevel", "kbLevel", "agiUnlocked", "sleepFmtV2"];
 const DEFAULT_STATE = {
   level: 1,
   xp: 0,
@@ -99,8 +99,24 @@ const DEFAULT_STATE = {
   exerciseSwaps: {},
   plankLevel: 1,
   kbLevel: 1,
-  agiUnlocked: false
+  agiUnlocked: false,
+  sleepFmtV2: false
 };
+
+// ─── SOMN: ore + minute (HH:MM) ───
+function hmToDec(h, m) {
+  const hh = parseInt(h, 10) || 0;
+  const mm = Math.min(59, Math.max(0, parseInt(m, 10) || 0));
+  return Math.round((hh + mm / 60) * 1000) / 1000;
+}
+function fmtSleep(dec) {
+  const n = parseFloat(dec);
+  if (isNaN(n)) return "--";
+  let total = Math.round(n * 60);
+  const h = Math.floor(total / 60);
+  const m = total % 60;
+  return h + "h" + String(m).padStart(2, "0") + "m";
+}
 
 // ─── CONSTANTS ───
 const RANKS = [{
@@ -203,17 +219,11 @@ const PPL = {
       rest: 150,
       desc: "Grip bar wider than shoulders. Pull yourself up (or pull bar down) until chin clears bar. Squeeze lats at top, slow negative."
     }, {
-      name: "Barbell Rows",
-      sets: "4×8-10",
+      name: "Chest-Supported Row",
+      sets: "4×10-12",
       muscle: "Upper Back",
-      rest: 150,
-      desc: "Hinge at hips ~45°, grip bar shoulder-width. Pull bar to lower chest, squeezing shoulder blades together. Keep back flat."
-    }, {
-      name: "Romanian Deadlift",
-      sets: "3×8-10",
-      muscle: "Hamstrings",
-      rest: 150,
-      desc: "⭐ ADDED: Hamstrings priority. Hold bar at hips, slight knee bend. Hinge forward keeping back flat until stretch in hams. Squeeze glutes to return."
+      rest: 120,
+      desc: "Piept sprijinit pe banca inclinata la 30-45°. Trage ganterele spre solduri, strange omoplatii 1s la varf. Mijlocul e complet descarcat — coloana nu sustine nimic."
     }, {
       name: "Seated Cable Row",
       sets: "3×10-12",
@@ -269,11 +279,11 @@ const PPL = {
       rest: 180,
       desc: "Bar on upper back, feet shoulder-width. Sit back and down until thighs are parallel or below. Drive through heels, chest up."
     }, {
-      name: "Romanian Deadlift",
-      sets: "4×8-10",
-      muscle: "Hamstrings",
-      rest: 150,
-      desc: "⭐ PRIORITY (Hamstrings 40 XP - weak). Hold bar at hips, slight knee bend. Hinge forward keeping back flat until stretch in hamstrings. Squeeze glutes to return."
+      name: "Leg Extension",
+      sets: "3×12-15",
+      muscle: "Quads",
+      rest: 90,
+      desc: "Izolare cvadriceps, zero incarcare axiala pe coloana. Spatele lipit de scaun, extinde controlat, pauza 1s sus, coborare lenta. Nu bloca genunchiul brusc."
     }, {
       name: "Leg Press",
       sets: "3×10-12",
@@ -299,14 +309,12 @@ const PPL = {
       rest: 60,
       desc: "⭐ PRIORITY (Calves 20 XP - weak). 5 sets! Stand on edge of step, heels hanging off. Rise up on toes as high as possible, hold 1 sec, lower below step level for full stretch."
     }, {
-      name: "Plank",
-      sets: "3 seturi",
+      name: "Weighted Plank",
+      sets: "3×45s",
       muscle: "Core",
       rest: 60,
       finisher: true,
-      repsOnly: true,
-      plankProg: true,
-      desc: "🎯 CORE FINISHER (5 min). Foloseste NIVELUL tau curent de plank (acelasi ca la bonus quest). Logheaza in SECUNDE. Cand stapanesti nivelul, avanseaza din bonus quest-ul Plank."
+      desc: "🎯 CORE FINISHER (5 min). Plank pe antebrate, disc pe spate daca poti. Corp drept, fund jos, abdomen contractat. 45s pe set. Intareste core-ul stabilizator dupa picioare."
     }]
   },
   4: {
@@ -374,11 +382,11 @@ const PPL = {
     color: "#3b82f6",
     icon: "🔵",
     exercises: [{
-      name: "Barbell Rows",
-      sets: "4×8-10",
+      name: "Chest-Supported Row",
+      sets: "4×10-12",
       muscle: "Back",
-      rest: 150,
-      desc: "Second pull day variation: try underhand grip or Pendlay rows (from floor each rep) for different angle and stimulus."
+      rest: 120,
+      desc: "A doua zi de Pull: priza neutra sau banca la 30° pentru alt unghi. Torsul sprijinit tot setul, fara balans din solduri."
     }, {
       name: "Single Arm DB Row",
       sets: "3×10-12",
@@ -788,12 +796,12 @@ const BONUS_Q = [{
   desc: "Friday - calves recovery from Wed"
 }, {
   id: "extrardl",
-  label: "Extra RDL Set (2x10 light)",
+  label: "Extra Leg Extension (2x15)",
   stat: "STR",
   xp: 30,
-  icon: "🦿",
+  icon: "🦵",
   days: [6],
-  desc: "Saturday off-day - hamstrings booster"
+  desc: "Saturday off-day - booster cvadriceps, zero incarcare pe coloana"
 }, {
   id: "situps",
   label: "100 Sit-ups",
@@ -802,6 +810,12 @@ const BONUS_Q = [{
   icon: "🔥",
   days: [6, 0],
   desc: "Weekend core finisher"
+}, {
+  id: "coldshower",
+  label: "Cold Shower (5 min)",
+  stat: "VIT",
+  xp: 20,
+  icon: "🧊"
 }, {
   id: "kettlebell",
   label: "Kettlebell Pavel",
@@ -813,12 +827,19 @@ const BONUS_Q = [{
   desc: "Stil Pavel: daca poti 10 reps, fa 5. NU la epuizare. 20-25 min."
 }, {
   id: "swimsauna",
-  label: "Inot + Sauna",
+  label: "Inot",
   stat: "VIT",
   xp: 30,
   icon: "🏊",
   days: [6],
-  desc: "30-45 min inot ritm confortabil (NU cursa) + sauna. Recuperare activa: zero impact pe articulatii, mobilitate umar, core postural. Hidratare buna dupa sauna."
+  desc: "30-45 min inot ritm confortabil (NU cursa). Recuperare activa: zero impact pe articulatii, mobilitate umar, core postural."
+}, {
+  id: "mobility",
+  label: "Mobility 5 min (acasa)",
+  stat: "AGI",
+  xp: 15,
+  icon: "🤸",
+  desc: "5 minute seara, acasa, fara echipament: hip opener 90/90, rotatii toracice, ankle rocks, cat-cow. Singura sursa de AGI — la squat 110kg mobilitatea soldului devine factor limitant."
 }];
 
 // Plank progression - built-in 4 levels. Cresti NIVELUL, nu timpul peste 60s.
@@ -969,31 +990,7 @@ const PODCAST_SCHEDULE = [{
     url: "https://www.youtube.com/@alaboratory"
   }]
 }];
-const WEEKLY_OBJ = [{
-  id: "sauna1",
-  label: "Sauna Session #1",
-  icon: "🧖",
-  xp: 20,
-  stat: "VIT"
-}, {
-  id: "sauna2",
-  label: "Sauna Session #2",
-  icon: "🧖",
-  xp: 20,
-  stat: "VIT"
-}, {
-  id: "sauna3",
-  label: "Sauna Session #3",
-  icon: "🧖",
-  xp: 20,
-  stat: "VIT"
-}, {
-  id: "yogasession",
-  label: "Yoga / Stretch Session (30 min)",
-  icon: "🧘",
-  xp: 35,
-  stat: "AGI"
-}];
+const WEEKLY_OBJ = [];
 const MUSCLE_RANKS = [{
   name: "Bronze",
   min: 0,
@@ -1044,7 +1041,7 @@ const MUSCLE_GROUPS = [{
   key: "back",
   name: "Back",
   icon: "🔙",
-  exercises: ["Pull-ups / Lat Pulldown", "Barbell Rows", "Seated Cable Row", "Single Arm DB Row", "Cable Pullover"]
+  exercises: ["Pull-ups / Lat Pulldown", "Chest-Supported Row", "Seated Cable Row", "Single Arm DB Row", "Cable Pullover"]
 }, {
   key: "shoulders",
   name: "Shoulders",
@@ -1064,17 +1061,17 @@ const MUSCLE_GROUPS = [{
   key: "quads",
   name: "Quads",
   icon: "🦵",
-  exercises: ["Squats", "Leg Press", "Walking Lunges"]
+  exercises: ["Squats", "Leg Press", "Walking Lunges", "Leg Extension"]
 }, {
   key: "hamstrings",
   name: "Hamstrings",
   icon: "🦿",
-  exercises: ["Romanian Deadlift", "Leg Curls"]
+  exercises: ["Leg Curls"]
 }, {
   key: "glutes",
   name: "Glutes",
   icon: "🍑",
-  exercises: ["Squats", "Walking Lunges", "Romanian Deadlift"]
+  exercises: ["Squats", "Walking Lunges"]
 }, {
   key: "calves",
   name: "Calves",
@@ -1084,7 +1081,7 @@ const MUSCLE_GROUPS = [{
   key: "core",
   name: "Core",
   icon: "🔥",
-  exercises: ["Cable Crunches", "Decline Sit-ups", "Hanging Leg Raises", "Hollow Hold", "Hollow Body Hold", "Plank", "Russian Twists", "Ab Wheel / Plank", "Turkish Get-Up / Windmill", "Windmill / Turkish Get-Up", "Pallof Press cu banda", "Side Plank", "Leg Raises", "Bicycle Crunches"]
+  exercises: ["Cable Crunches", "Decline Sit-ups", "Hanging Leg Raises", "Hollow Hold", "Hollow Body Hold", "Plank", "Weighted Plank", "Russian Twists", "Ab Wheel / Plank", "Turkish Get-Up / Windmill", "Windmill / Turkish Get-Up", "Pallof Press cu banda", "Side Plank", "Leg Raises", "Bicycle Crunches"]
 }, {
   key: "cardio",
   name: "Cardio",
@@ -1203,7 +1200,7 @@ const EXERCISE_ALTERNATIVES = {
     name: "Cable Pulldown",
     reason: "Different angle"
   }],
-  "Barbell Rows": [{
+  "Chest-Supported Row": [{
     name: "DB Rows",
     reason: "Single arm focus"
   }, {
@@ -1211,11 +1208,11 @@ const EXERCISE_ALTERNATIVES = {
     reason: "Different machine"
   }, {
     name: "Seated Cable Row",
-    reason: "Less back stress"
+    reason: "Cablu, tors fix"
   }],
   "Seated Cable Row": [{
-    name: "Barbell Rows",
-    reason: "Compound version"
+    name: "Chest-Supported Row",
+    reason: "Tors sprijinit"
   }, {
     name: "DB Rows",
     reason: "Unilateral"
@@ -1227,7 +1224,7 @@ const EXERCISE_ALTERNATIVES = {
     name: "Cable Single Row",
     reason: "Constant tension"
   }, {
-    name: "Barbell Rows",
+    name: "Chest-Supported Row",
     reason: "Bilateral"
   }, {
     name: "Seated Cable Row",
@@ -1257,15 +1254,15 @@ const EXERCISE_ALTERNATIVES = {
     name: "Cable Reverse Fly",
     reason: "Constant tension"
   }],
-  "Romanian Deadlift": [{
-    name: "Single-leg RDL",
-    reason: "Unilateral focus"
+  "Leg Extension": [{
+    name: "Bulgarian Split Squat",
+    reason: "Unilateral, fara compresie"
   }, {
-    name: "DB RDL",
-    reason: "Lighter loading"
+    name: "Sissy Squat",
+    reason: "Bodyweight"
   }, {
-    name: "Good Mornings",
-    reason: "Variation"
+    name: "Leg Press (picioare jos)",
+    reason: "Accent cvadriceps"
   }],
   "Squats": [{
     name: "Front Squats",
@@ -1301,14 +1298,14 @@ const EXERCISE_ALTERNATIVES = {
     reason: "Different angle"
   }],
   "Leg Curls": [{
-    name: "Romanian Deadlift",
-    reason: "Compound version"
+    name: "Seated Leg Curl",
+    reason: "Alt unghi"
   }, {
     name: "Glute-Ham Raise",
     reason: "Bodyweight"
   }, {
-    name: "Single-leg RDL",
-    reason: "Unilateral"
+    name: "Nordic Curl",
+    reason: "Excentric"
   }],
   "Calf Raises": [{
     name: "Seated Calf Raises",
@@ -1424,21 +1421,21 @@ const BOSS_LIBRARY = [{
   },
   bossQuests: [{
     id: "bq_plank",
-    label: "Plank la nivelul tau (3 seturi)",
+    label: "Weighted Plank (3x60s)",
     stat: "VIT",
     muscle: "core",
     xp: 15,
     icon: "🪨"
   }, {
     id: "bq_hangleg",
-    label: "Hanging Leg Raises SAU Leg Raises pe podea (3x15)",
+    label: "Hanging Leg Raises (3x12)",
     stat: "VIT",
     muscle: "core",
     xp: 15,
     icon: "🔥"
   }, {
     id: "bq_carry",
-    label: "Hollow Body Hold (3x30s) — acasa",
+    label: "Hollow Body Hold (3x30s)",
     stat: "VIT",
     muscle: "core",
     xp: 15,
@@ -1465,19 +1462,19 @@ const BOSS_LIBRARY = [{
   },
   bossQuests: [{
     id: "bq_mobility",
-    label: "Mobilitate 10 min (sold + torace) — acasa",
+    label: "Mobility Work (10 min)",
     stat: "AGI",
     xp: 15,
     icon: "🤸"
   }, {
     id: "bq_yoga",
-    label: "Stretching 15 min — acasa sau dupa antrenament",
+    label: "Stretching 15 min (acasa)",
     stat: "AGI",
     xp: 15,
     icon: "🧘"
   }, {
     id: "bq_hipopener",
-    label: "Hip Openers 5 min — acasa",
+    label: "Hip Openers + Thoracic (5 min)",
     stat: "AGI",
     xp: 10,
     icon: "🦵"
@@ -1501,14 +1498,14 @@ const BOSS_LIBRARY = [{
   },
   bossQuests: [{
     id: "bq_rdl",
-    label: "Good Mornings cu banda (3x20) — acasa",
+    label: "Extra Leg Curls (2x15)",
     stat: "STR",
     muscle: "hamstrings",
     xp: 15,
     icon: "🦿"
   }, {
     id: "bq_legcurl",
-    label: "Nordic Curl asistat SAU Glute Bridge (3x15) — acasa",
+    label: "Leg Curls Burnout (2x20)",
     stat: "STR",
     muscle: "hamstrings",
     xp: 15,
@@ -1533,14 +1530,14 @@ const BOSS_LIBRARY = [{
   },
   bossQuests: [{
     id: "bq_calf_blitz",
-    label: "Calf Raises 100 reps — oriunde, pe o treapta",
+    label: "Calf Raises (100+ reps)",
     stat: "STR",
     muscle: "calves",
     xp: 15,
     icon: "🦶"
   }, {
     id: "bq_calf_single",
-    label: "Single-Leg Calf Raises (3x15/picior) — acasa",
+    label: "Single-Leg Calf Raises (3x15/leg)",
     stat: "STR",
     muscle: "calves",
     xp: 12,
@@ -1566,20 +1563,36 @@ const BOSS_LIBRARY = [{
   },
   bossQuests: [{
     id: "bq_db_incline",
-    label: "Push-ups inclinat (3x max) — acasa",
+    label: "DB Incline focus (progresie reps)",
     stat: "STR",
     muscle: "chest",
     xp: 15,
     icon: "🏋️"
   }, {
     id: "bq_cable_fly",
-    label: "Band Chest Flyes (3x20) — cu banda",
+    label: "Cable Flyes burnout (2x15)",
     stat: "STR",
     muscle: "chest",
     xp: 12,
     icon: "🎯"
   }],
   lore: "92.5kg has held you for weeks. Build the angles, break the gate."
+}, {
+  id: "deload_phoenix",
+  name: "The Deload Phoenix",
+  emoji: "🔥",
+  theme: "Rebirth Through Recovery",
+  description: "Complete 7 days at 70% intensity (deload week).",
+  target: {
+    type: "deload",
+    days: 7
+  },
+  durationDays: 7,
+  reward: {
+    xp: 150,
+    badge: "Phoenix Risen"
+  },
+  lore: "Sometimes the strongest move is to step back. Rise renewed."
 }, {
   id: "core_leviathan",
   name: "The Abyssal Leviathan",
@@ -1598,21 +1611,21 @@ const BOSS_LIBRARY = [{
   },
   bossQuests: [{
     id: "bq_hanging_raise",
-    label: "Leg Raises pe podea (3x20) — acasa",
+    label: "Hanging Leg Raises (3x12)",
     stat: "VIT",
     muscle: "core",
     xp: 15,
     icon: "🔥"
   }, {
     id: "bq_cable_crunch",
-    label: "Crunch cu banda SAU Sit-ups (3x25) — acasa",
+    label: "Cable Crunches (3x15)",
     stat: "VIT",
     muscle: "core",
     xp: 15,
     icon: "⚓"
   }, {
     id: "bq_side_plank",
-    label: "Side Plank (2x45s / parte) — acasa",
+    label: "Side Plank (2x45s / parte)",
     stat: "VIT",
     muscle: "core",
     xp: 12,
@@ -1639,19 +1652,19 @@ const BOSS_LIBRARY = [{
   },
   bossQuests: [{
     id: "bq_yoga_flow",
-    label: "Yoga Flow 15 min — acasa",
+    label: "Mobility Flow (15 min)",
     stat: "AGI",
     xp: 15,
     icon: "🧘"
   }, {
     id: "bq_deep_squat",
-    label: "Deep Squat Hold (3x60s) — acasa",
+    label: "Deep Squat Hold (3x60s)",
     stat: "AGI",
     xp: 12,
     icon: "🐍"
   }, {
     id: "bq_thoracic",
-    label: "Thoracic + Hip Openers 8 min — acasa",
+    label: "Thoracic + Hip Openers (8 min)",
     stat: "AGI",
     xp: 10,
     icon: "🌀"
@@ -1675,14 +1688,14 @@ const BOSS_LIBRARY = [{
   },
   bossQuests: [{
     id: "bq_standing_calf",
-    label: "Standing Calf Raises (4x20) — pe treapta, oriunde",
+    label: "Standing Calf Raises (4x15 slow)",
     stat: "STR",
     muscle: "calves",
     xp: 12,
     icon: "🗿"
   }, {
     id: "bq_seated_calf",
-    label: "Seated Calf Raises (3x25) — acasa, greutate pe genunchi",
+    label: "Seated Calf Raises (3x20)",
     stat: "STR",
     muscle: "calves",
     xp: 12,
@@ -1694,12 +1707,12 @@ const BOSS_LIBRARY = [{
   name: "The Silent Reaper",
   emoji: "🌾",
   theme: "Harvest of the Chain",
-  description: "Intareste lantul posterior: RDL progresie constanta.",
+  description: "Intareste lantul posterior: Leg Curls progresie constanta.",
   target: {
     type: "lift",
-    exercise: "Romanian Deadlift",
-    kg: 90,
-    reps: 8
+    exercise: "Leg Curls",
+    kg: 55,
+    reps: 15
   },
   durationDays: 28,
   reward: {
@@ -1708,14 +1721,14 @@ const BOSS_LIBRARY = [{
   },
   bossQuests: [{
     id: "bq_rdl_focus",
-    label: "Single-Leg RDL fara greutate (3x12/picior) — acasa",
+    label: "Leg Curls — tempo lent, control excentric",
     stat: "STR",
     muscle: "hamstrings",
     xp: 15,
     icon: "🌾"
   }, {
     id: "bq_leg_curl",
-    label: "Glute Bridge cu pauza (3x20) — acasa",
+    label: "Leg Curls burnout (2x15)",
     stat: "STR",
     muscle: "hamstrings",
     xp: 12,
@@ -1740,14 +1753,14 @@ const BOSS_LIBRARY = [{
   },
   bossQuests: [{
     id: "bq_db_press_focus",
-    label: "Push-ups (3x max, pauza 1s jos) — acasa",
+    label: "DB Bench — pauza 1s pe piept",
     stat: "STR",
     muscle: "chest",
     xp: 15,
     icon: "🗿"
   }, {
     id: "bq_flye_stretch",
-    label: "Band Chest Flyes (3x20) — cu banda",
+    label: "Cable Flyes — intindere maxima",
     stat: "STR",
     muscle: "chest",
     xp: 12,
@@ -1772,14 +1785,14 @@ const BOSS_LIBRARY = [{
   },
   bossQuests: [{
     id: "bq_row_squeeze",
-    label: "Band Rows (3x20, strange omoplatii) — cu banda",
+    label: "Rows — strange omoplatii 1s",
     stat: "STR",
     muscle: "back",
     xp: 15,
     icon: "🐉"
   }, {
     id: "bq_pullup_focus",
-    label: "Dead Hang (3x max) SAU Band Pull-Aparts (3x25)",
+    label: "Pull-ups / Lat Pulldown — control total",
     stat: "STR",
     muscle: "back",
     xp: 15,
@@ -1804,14 +1817,14 @@ const BOSS_LIBRARY = [{
   },
   bossQuests: [{
     id: "bq_squat_depth",
-    label: "Bodyweight Squats (3x30, adancime completa) — acasa",
+    label: "Squat / Leg Press — adancime completa",
     stat: "STR",
     muscle: "quads",
     xp: 15,
     icon: "🦏"
   }, {
     id: "bq_leg_ext",
-    label: "Wall Sit (3x60s) — acasa",
+    label: "Leg Extensions — burnout 2x20",
     stat: "STR",
     muscle: "quads",
     xp: 12,
@@ -1865,14 +1878,14 @@ const BOSS_LIBRARY = [{
   },
   bossQuests: [{
     id: "bq_arnold_focus",
-    label: "Pike Push-ups (3x max) — acasa",
+    label: "Arnold Press — rotatie completa",
     stat: "STR",
     muscle: "shoulders",
     xp: 15,
     icon: "⚡"
   }, {
     id: "bq_lat_raise",
-    label: "Lateral Raises cu banda (3x25) — cu banda",
+    label: "Lateral Raises — 3x15 controlat",
     stat: "STR",
     muscle: "shoulders",
     xp: 12,
@@ -1899,13 +1912,13 @@ const BOSS_LIBRARY = [{
   },
   bossQuests: [{
     id: "bq_tgu",
-    label: "Turkish Get-Up (3x5/parte) — acasa cu gantera",
+    label: "Turkish Get-Up (3x5/parte)",
     stat: "AGI",
     xp: 15,
     icon: "🌀"
   }, {
     id: "bq_windmill",
-    label: "Windmill (3x8/parte) — acasa",
+    label: "Windmill (3x5/parte)",
     stat: "AGI",
     xp: 15,
     icon: "🌬️"
@@ -1917,131 +1930,6 @@ const BOSS_LIBRARY = [{
     icon: "🔔"
   }],
   lore: "Djinnul e prizonier in propriile lanturi de rigiditate. Fiecare miscare controlata slabeste o veriga."
-}, {
-  id: "biceps_warden",
-  name: "The Iron Warden",
-  emoji: "💪",
-  theme: "Guardian of the Arms",
-  description: "Construieste bratele: acumuleaza XP pe biceps.",
-  target: {
-    type: "muscleXp",
-    muscle: "biceps",
-    amount: 55
-  },
-  durationDays: 21,
-  reward: {
-    xp: 225,
-    badge: "Iron Warden"
-  },
-  bossQuests: [{
-    id: "bq_band_curl",
-    label: "Banded Curls (3x25) — cu banda, acasa",
-    stat: "STR",
-    muscle: "biceps",
-    xp: 15,
-    icon: "💪"
-  }, {
-    id: "bq_towel_curl",
-    label: "Isometric Curl cu prosop (3x30s) — acasa",
-    stat: "STR",
-    muscle: "biceps",
-    xp: 12,
-    icon: "🧻"
-  }],
-  lore: "Paznicul nu doarme niciodata. Doar volumul constant il obliga sa cedeze."
-}, {
-  id: "tricep_sentinel",
-  name: "The Bronze Sentinel",
-  emoji: "🔱",
-  theme: "Watchtower of the Arms",
-  description: "Intareste tricepsul — cheia pentru bench mai greu.",
-  target: {
-    type: "muscleXp",
-    muscle: "triceps",
-    amount: 55
-  },
-  durationDays: 21,
-  reward: {
-    xp: 225,
-    badge: "Bronze Sentinel"
-  },
-  bossQuests: [{
-    id: "bq_diamond_pu",
-    label: "Diamond Push-ups (3x max) — acasa",
-    stat: "STR",
-    muscle: "triceps",
-    xp: 15,
-    icon: "🔱"
-  }, {
-    id: "bq_band_ext",
-    label: "Banded Tricep Extension (3x25) — cu banda",
-    stat: "STR",
-    muscle: "triceps",
-    xp: 12,
-    icon: "🎯"
-  }],
-  lore: "Turnul de veghe sustine intreaga fortareata a impingerii. Intareste-l."
-}, {
-  id: "glute_monarch",
-  name: "The Crowned Monarch",
-  emoji: "👑",
-  theme: "Throne of Power",
-  description: "Fesierii — motorul real al hinge-ului si al squat-ului.",
-  target: {
-    type: "muscleXp",
-    muscle: "glutes",
-    amount: 60
-  },
-  durationDays: 21,
-  reward: {
-    xp: 240,
-    badge: "Crowned Monarch"
-  },
-  bossQuests: [{
-    id: "bq_glute_bridge",
-    label: "Single-Leg Glute Bridge (3x20/picior) — acasa",
-    stat: "STR",
-    muscle: "glutes",
-    xp: 15,
-    icon: "👑"
-  }, {
-    id: "bq_monster_walk",
-    label: "Monster Walks cu banda (3x20 pasi) — cu banda",
-    stat: "STR",
-    muscle: "glutes",
-    xp: 12,
-    icon: "🦵"
-  }],
-  lore: "Tronul se sprijina pe fesieri. Fara ei, coroana cade."
-}, {
-  id: "sleep_sentinel",
-  name: "The Dream Keeper",
-  emoji: "🌙",
-  theme: "Sanctuary of Recovery",
-  description: "Somnul e factorul #1 pentru muschi. Mentine streak-ul si dormi bine.",
-  target: {
-    type: "streak",
-    days: 21
-  },
-  durationDays: 28,
-  reward: {
-    xp: 260,
-    badge: "Dream Keeper"
-  },
-  bossQuests: [{
-    id: "bq_sleep_log",
-    label: "Logheaza somnul + Readiness zilnic",
-    stat: "VIT",
-    xp: 10,
-    icon: "🌙"
-  }, {
-    id: "bq_no_screen",
-    label: "Fara ecrane 30 min inainte de culcare",
-    stat: "VIT",
-    xp: 10,
-    icon: "📵"
-  }],
-  lore: "Muschiul nu creste in sala. Creste in intuneric, cand dormi."
 }];
 
 // ─── MOBILITY DATA (with images & YouTube links) ───
@@ -2962,8 +2850,8 @@ function SleepLogger({
   logSleep
 }) {
   const [hours, setHours] = useState("");
+  const [mins, setMins] = useState("");
   const [rating, setRating] = useState(0);
-  const [readiness, setReadiness] = useState("");
   return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
@@ -2972,18 +2860,13 @@ function SleepLogger({
       alignItems: "center"
     }
   }, /*#__PURE__*/React.createElement("input", {
-    type: "text",
-    inputMode: "decimal",
-    autoComplete: "off",
-    autoCorrect: "off",
+    type: "number",
+    inputMode: "numeric",
+    min: "0",
+    max: "14",
     value: hours,
-    placeholder: "Ore (ex: 7.2)",
-    onChange: e => {
-      let v = e.target.value.replace(/,/g, ".").replace(/[^0-9.]/g, "");
-      const parts = v.split(".");
-      if (parts.length > 2) v = parts[0] + "." + parts.slice(1).join("");
-      setHours(v);
-    },
+    placeholder: "ore",
+    onChange: e => setHours(e.target.value.replace(/[^0-9]/g, "")),
     style: {
       flex: 1,
       padding: "7px 8px",
@@ -2994,7 +2877,35 @@ function SleepLogger({
       fontSize: 12,
       fontFamily: "'Courier New',monospace",
       outline: "none",
-      boxSizing: "border-box"
+      boxSizing: "border-box",
+      textAlign: "center"
+    }
+  }), /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: "#64748b",
+      fontSize: 13,
+      fontWeight: 700
+    }
+  }, ":"), /*#__PURE__*/React.createElement("input", {
+    type: "number",
+    inputMode: "numeric",
+    min: "0",
+    max: "59",
+    value: mins,
+    placeholder: "min",
+    onChange: e => setMins(e.target.value.replace(/[^0-9]/g, "").slice(0, 2)),
+    style: {
+      flex: 1,
+      padding: "7px 8px",
+      background: "rgba(0,0,0,.3)",
+      border: "1px solid rgba(99,102,241,.3)",
+      borderRadius: 5,
+      color: "#e2e8f0",
+      fontSize: 12,
+      fontFamily: "'Courier New',monospace",
+      outline: "none",
+      boxSizing: "border-box",
+      textAlign: "center"
     }
   }), /*#__PURE__*/React.createElement("div", {
     style: {
@@ -3016,37 +2927,16 @@ function SleepLogger({
       cursor: "pointer",
       fontFamily: "inherit"
     }
-  }, "\u2605")))), /*#__PURE__*/React.createElement("input", {
-    type: "text",
-    inputMode: "numeric",
-    autoComplete: "off",
-    autoCorrect: "off",
-    value: readiness,
-    placeholder: "Readiness Oura (0-100, optional)",
-    onChange: e => setReadiness(e.target.value.replace(/[^0-9]/g, "").slice(0, 3)),
-    style: {
-      width: "100%",
-      padding: "7px 8px",
-      marginBottom: 6,
-      background: "rgba(0,0,0,.3)",
-      border: "1px solid rgba(52,211,153,.3)",
-      borderRadius: 5,
-      color: "#e2e8f0",
-      fontSize: 12,
-      fontFamily: "'Courier New',monospace",
-      outline: "none",
-      boxSizing: "border-box"
-    }
-  }), /*#__PURE__*/React.createElement("button", {
+  }, "\u2605")))), /*#__PURE__*/React.createElement("button", {
     onClick: () => {
-      if (!hours || rating === 0) {
-        alert("Introdu orele si rating-ul");
+      if (!hours && !mins || rating === 0) {
+        alert("Introdu ore + minute si rating");
         return;
       }
-      logSleep(hours, rating, readiness);
+      logSleep(hmToDec(hours, mins), rating);
       setHours("");
+      setMins("");
       setRating(0);
-      setReadiness("");
     },
     style: {
       width: "100%",
@@ -3104,7 +2994,7 @@ function App() {
   // Blocking reminder modal: null | "sleep" | "weight"
   const [reminderModal, setReminderModal] = useState(null);
   const [rmSleepH, setRmSleepH] = useState("");
-  const [rmReadiness, setRmReadiness] = useState("");
+  const [rmSleepM, setRmSleepM] = useState("");
   const [rmSleepR, setRmSleepR] = useState(0);
   const [rmWeight, setRmWeight] = useState("");
   const [rmFat, setRmFat] = useState("");
@@ -3201,6 +3091,38 @@ function App() {
           };
           for (const k of SAVE_FIELDS) if (d[k] !== undefined) merged[k] = d[k];
           g.current = merged;
+
+          // ─── MIGRARE v2: somn HH:MM + curatare intrari eronate ───
+          let _migDone = false;
+          try {
+            _migDone = localStorage.getItem("slv_sleepFmtV2") === "1";
+          } catch (e) {}
+          if (!g.current.sleepFmtV2 && !_migDone) {
+            const convH = v => {
+              const str = String(v);
+              if (str.indexOf(".") === -1) return parseFloat(str) || 0;
+              const parts = str.split(".");
+              const whole = parseInt(parts[0], 10) || 0;
+              const mins = parseInt((parts[1] + "0").slice(0, 2), 10);
+              if (isNaN(mins) || mins > 59) return parseFloat(str) || 0;
+              return Math.round((whole + mins / 60) * 1000) / 1000;
+            };
+            g.current.sleepLog = (g.current.sleepLog || []).map(x => ({
+              ...x,
+              hours: convH(x.hours)
+            }));
+            const ll = {
+              ...(g.current.liftLog || {})
+            };
+            if (ll["Barbell Rows"]) ll["Barbell Rows"] = ll["Barbell Rows"].filter(e => e.date !== "2026-09-01");
+            if (ll["Romanian Deadlift"]) ll["Romanian Deadlift"] = ll["Romanian Deadlift"].filter(e => e.date !== "2026-09-02");
+            g.current.liftLog = ll;
+            g.current.sleepFmtV2 = true;
+            try {
+              localStorage.setItem("slv_sleepFmtV2", "1");
+            } catch (e) {}
+            await saveToIDB(g.current);
+          }
         }
 
       // ─── AUTO DAILY RESET + PENALTY (runs after load) ───
@@ -3427,7 +3349,7 @@ function App() {
       swimsauna: ["cardio"],
       weightedplank: ["core"],
       calfblitz: ["calves"],
-      extrardl: ["hamstrings", "glutes"],
+      extrardl: ["quads"],
       protein: [],
       mobility: []
     };
@@ -3675,10 +3597,10 @@ function App() {
   // Machines (cable, smith, leg press, etc): din 2.5 in 2.5 (sau 5 daca placi mari)
   const getKgIncrement = exName => {
     // DB / Dumbbell exercises - increment 2kg
-    const dbExercises = ["DB Bench Press", "DB Incline Bench Press", "Incline DB Press", "Arnold Press", "Single Arm DB Row", "Lateral Raises", "Front Raises", "Hammer Curls", "Incline Curls", "Concentration Curls", "Reverse Flyes"];
+    const dbExercises = ["DB Bench Press", "DB Incline Bench Press", "Incline DB Press", "Arnold Press", "Single Arm DB Row", "Chest-Supported Row", "Lateral Raises", "Front Raises", "Hammer Curls", "Incline Curls", "Concentration Curls", "Reverse Flyes"];
     // Light isolation barbell/EZ - increment 2.5kg
     // Compound barbell - increment 2.5-5kg
-    const heavyCompound = ["Bench Press", "Squats", "Romanian Deadlift", "Overhead Press", "Barbell Rows", "Pull-ups / Lat Pulldown", "Leg Press"];
+    const heavyCompound = ["Bench Press", "Squats", "Overhead Press", "Pull-ups / Lat Pulldown", "Leg Press"];
     if (dbExercises.includes(exName)) return 2;
     if (heavyCompound.includes(exName)) return 2.5;
     return 2.5; // default: cables, isolation, etc
@@ -3860,21 +3782,18 @@ function App() {
   };
 
   // Sleep tracker
-  const logSleep = (hours, rating, readiness) => {
+  const logSleep = (hours, rating) => {
     const todayKey = new Date().toISOString().slice(0, 10);
     const existing = (g.current.sleepLog || []).filter(s => s.date !== todayKey);
-    const entry = {
+    const newLog = [...existing, {
       date: todayKey,
       hours: parseFloat(hours),
       rating: parseInt(rating)
-    };
-    const rd = parseInt(readiness);
-    if (!isNaN(rd) && rd > 0) entry.readiness = rd;
-    const newLog = [...existing, entry].sort((a, b) => a.date.localeCompare(b.date)).slice(-90);
+    }].sort((a, b) => a.date.localeCompare(b.date)).slice(-90);
     update({
       sleepLog: newLog
     });
-    setNotif(`😴 Somn: ${hours}h · ${rating}/5${entry.readiness ? ` · Readiness ${entry.readiness}` : ""}`);
+    setNotif(`😴 Somn logat: ${fmtSleep(hours)} · ${rating}/5`);
   };
 
   // Exercise swap
@@ -4178,19 +4097,21 @@ function App() {
     }
   }, reminderModal === "sleep" ? "Somnul e factorul #1 pentru retentia musculara. Logheaza sau amana." : "Masuratoare saptamanala. Introdu datele de pe cantar."),
   // ── SLEEP FIELDS ──
-  reminderModal === "sleep" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("input", {
+  reminderModal === "sleep" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 8,
+      alignItems: "center",
+      marginBottom: 10
+    }
+  }, /*#__PURE__*/React.createElement("input", {
     type: "text",
-    inputMode: "decimal",
+    inputMode: "numeric",
     autoComplete: "off",
     autoCorrect: "off",
     value: rmSleepH,
-    placeholder: "Ore de somn (ex: 7.2)",
-    onChange: e => {
-      let v = e.target.value.replace(/,/g, ".").replace(/[^0-9.]/g, "");
-      const parts = v.split(".");
-      if (parts.length > 2) v = parts[0] + "." + parts.slice(1).join("");
-      setRmSleepH(v);
-    },
+    placeholder: "ore",
+    onChange: e => setRmSleepH(e.target.value.replace(/[^0-9]/g, "").slice(0, 2)),
     style: {
       width: "100%",
       padding: "10px",
@@ -4202,10 +4123,36 @@ function App() {
       fontFamily: "inherit",
       outline: "none",
       boxSizing: "border-box",
-      marginBottom: 10,
       textAlign: "center"
     }
-  }), /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: "#64748b",
+      fontSize: 16,
+      fontWeight: 700
+    }
+  }, ":"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    inputMode: "numeric",
+    autoComplete: "off",
+    autoCorrect: "off",
+    value: rmSleepM,
+    placeholder: "min",
+    onChange: e => setRmSleepM(e.target.value.replace(/[^0-9]/g, "").slice(0, 2)),
+    style: {
+      width: "100%",
+      padding: "10px",
+      background: "rgba(0,0,0,.35)",
+      border: "1px solid rgba(99,102,241,.35)",
+      borderRadius: 6,
+      color: "#e2e8f0",
+      fontSize: 13,
+      fontFamily: "inherit",
+      outline: "none",
+      boxSizing: "border-box",
+      textAlign: "center"
+    }
+  })), /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 9,
       color: "#64748b",
@@ -4234,28 +4181,7 @@ function App() {
       cursor: "pointer",
       fontFamily: "inherit"
     }
-  }, "\u2605"))), /*#__PURE__*/React.createElement("input", {
-    type: "text",
-    inputMode: "numeric",
-    autoComplete: "off",
-    autoCorrect: "off",
-    value: rmReadiness,
-    placeholder: "Readiness Oura (0-100, optional)",
-    onChange: e => setRmReadiness(e.target.value.replace(/[^0-9]/g, "").slice(0, 3)),
-    style: {
-      width: "100%",
-      padding: "10px",
-      marginBottom: 4,
-      background: "rgba(0,0,0,.35)",
-      border: "1px solid rgba(52,211,153,.35)",
-      borderRadius: 6,
-      color: "#e2e8f0",
-      fontSize: 13,
-      fontFamily: "'Courier New',monospace",
-      outline: "none",
-      boxSizing: "border-box"
-    }
-  })),
+  }, "\u2605")))),
   // ── WEIGHT FIELDS ──
   reminderModal === "weight" && /*#__PURE__*/React.createElement("div", {
     style: {
@@ -4307,6 +4233,7 @@ function App() {
     onClick: () => {
       setReminderModal(null);
       setRmSleepH("");
+      setRmSleepM("");
       setRmSleepR(0);
       setRmWeight("");
       setRmFat("");
@@ -4326,12 +4253,11 @@ function App() {
   }, "Amana"), /*#__PURE__*/React.createElement("button", {
     onClick: () => {
       if (reminderModal === "sleep") {
-        if (!rmSleepH || rmSleepR === 0) {
-          setNotif("Introdu ore + rating, sau apasa Amana");
+        if (!rmSleepH && !rmSleepM || rmSleepR === 0) {
+          setNotif("Introdu ore + minute si rating, sau apasa Amana");
           return;
         }
-        logSleep(rmSleepH, rmSleepR, rmReadiness);
-        setRmReadiness("");
+        logSleep(hmToDec(rmSleepH, rmSleepM), rmSleepR);
       } else {
         if (!rmWeight) {
           setNotif("Introdu cel putin greutatea, sau apasa Amana");
@@ -4349,6 +4275,7 @@ function App() {
       }
       setReminderModal(null);
       setRmSleepH("");
+      setRmSleepM("");
       setRmSleepR(0);
       setRmWeight("");
       setRmFat("");
@@ -5131,7 +5058,7 @@ function App() {
         }
       }, "◂")));
     });
-  })(), /*#__PURE__*/React.createElement("div", {
+  })(), WEEKLY_OBJ.length > 0 && /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 9,
       color: "#334155",
@@ -5734,9 +5661,9 @@ function App() {
         }, (() => {
           if (ex.repsOnly) return `🤸 Bodyweight · progresezi prin REPS · fara greutate`;
           const inc = getKgIncrement(ex.name);
-          const dbExercises = ["DB Bench Press", "DB Incline Bench Press", "Incline DB Press", "Arnold Press", "Single Arm DB Row", "Lateral Raises", "Front Raises", "Hammer Curls", "Incline Curls", "Concentration Curls", "Reverse Flyes"];
+          const dbExercises = ["DB Bench Press", "DB Incline Bench Press", "Incline DB Press", "Arnold Press", "Single Arm DB Row", "Chest-Supported Row", "Lateral Raises", "Front Raises", "Hammer Curls", "Incline Curls", "Concentration Curls", "Reverse Flyes"];
           const isDB = dbExercises.includes(ex.name);
-          const isMachine = ["Leg Press", "Seated Cable Row", "Cable Flyes", "Tricep Pushdowns", "Cable Pullover", "Face Pulls", "Pull-ups / Lat Pulldown", "Leg Curls"].includes(ex.name);
+          const isMachine = ["Leg Press", "Seated Cable Row", "Cable Flyes", "Tricep Pushdowns", "Cable Pullover", "Face Pulls", "Pull-ups / Lat Pulldown", "Leg Curls", "Leg Extension"].includes(ex.name);
           if (isDB) return `🏋️ DB · log greutate/mana · increment ${inc}kg`;
           if (isMachine) return `⚙️ Masina · log doar placile · increment ${inc}kg`;
           return `🏋️‍♂️ Barbell · log total cu bara 20kg · increment ${inc}kg`;
@@ -6493,8 +6420,8 @@ function App() {
         letterSpacing: 2,
         marginBottom: 8
       }
-    }, "\u25B8 AVAILABLE BOSSES"), BOSS_LIBRARY.filter(b => !history.some(h => h.id === b.id && h.result === "victory")).map(b => {
-      const wonBefore = false;
+    }, "\u25B8 AVAILABLE BOSSES"), BOSS_LIBRARY.map(b => {
+      const wonBefore = history.some(h => h.id === b.id && h.result === "victory");
       return /*#__PURE__*/React.createElement("div", {
         key: b.id,
         style: {
@@ -6865,14 +6792,8 @@ function App() {
   })(), (() => {
     const sleepLog = g.current.sleepLog || [];
     const last7 = sleepLog.slice(-7);
-    const avgH = last7.length ? (last7.reduce((s, x) => s + x.hours, 0) / last7.length).toFixed(1) : "--";
+    const avgH = last7.length ? fmtSleep(last7.reduce((s, x) => s + x.hours, 0) / last7.length) : "--";
     const avgR = last7.length ? (last7.reduce((s, x) => s + x.rating, 0) / last7.length).toFixed(1) : "--";
-    const rdAll = sleepLog.filter(x => x.readiness);
-    const rd7 = rdAll.slice(-7);
-    const rdPrev7 = rdAll.slice(-14, -7);
-    const avgRd = rd7.length ? Math.round(rd7.reduce((s, x) => s + x.readiness, 0) / rd7.length) : null;
-    const avgRdPrev = rdPrev7.length ? Math.round(rdPrev7.reduce((s, x) => s + x.readiness, 0) / rdPrev7.length) : null;
-    const rdDelta = avgRd !== null && avgRdPrev !== null ? avgRd - avgRdPrev : null;
     const todayKey = new Date().toISOString().slice(0, 10);
     const todayLogged = sleepLog.find(s => s.date === todayKey);
     return /*#__PURE__*/React.createElement("div", {
@@ -6900,7 +6821,7 @@ function App() {
         color: "#86efac",
         textAlign: "center"
       }
-    }, "\u2713 Azi: ", todayLogged.hours, "h \xB7 ", "⭐".repeat(todayLogged.rating), todayLogged.readiness ? ` · Readiness ${todayLogged.readiness}` : "") : /*#__PURE__*/React.createElement(SleepLogger, {
+    }, "\u2713 Logat azi: ", fmtSleep(todayLogged.hours), " \xB7 ", "⭐".repeat(todayLogged.rating)) : /*#__PURE__*/React.createElement(SleepLogger, {
       logSleep: logSleep
     }), /*#__PURE__*/React.createElement("div", {
       style: {
@@ -6928,7 +6849,7 @@ function App() {
         color: "#a5b4fc",
         fontWeight: 700
       }
-    }, avgH, "h")), /*#__PURE__*/React.createElement("div", {
+    }, avgH)), /*#__PURE__*/React.createElement("div", {
       style: {
         padding: "8px",
         background: "rgba(0,0,0,.3)",
@@ -6947,66 +6868,9 @@ function App() {
         color: "#a5b4fc",
         fontWeight: 700
       }
-    }, avgR, "/5"))), avgRd !== null && /*#__PURE__*/React.createElement("div", {
-      style: {
-        marginTop: 8,
-        padding: "8px 10px",
-        background: "rgba(52,211,153,.06)",
-        border: "1px solid rgba(52,211,153,.2)",
-        borderRadius: 5
-      }
-    }, /*#__PURE__*/React.createElement("div", {
-      style: {
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginBottom: 6
-      }
-    }, /*#__PURE__*/React.createElement("span", {
-      style: {
-        fontSize: 7,
-        color: "#64748b",
-        letterSpacing: 1
-      }
-    }, "READINESS OURA \u00B7 MEDIE 7 ZILE"), /*#__PURE__*/React.createElement("span", {
-      style: {
-        fontSize: 18,
-        color: avgRd >= 85 ? "#34d399" : avgRd >= 70 ? "#a5b4fc" : "#f59e0b",
-        fontWeight: 700
-      }
-    }, avgRd)), rdDelta !== null && /*#__PURE__*/React.createElement("div", {
-      style: {
-        fontSize: 8,
-        color: rdDelta > 0 ? "#34d399" : rdDelta < 0 ? "#f87171" : "#64748b",
-        marginBottom: 6
-      }
-    }, rdDelta > 0 ? "▲ +" : rdDelta < 0 ? "▼ " : "= ", rdDelta !== 0 ? rdDelta : "", " fata de saptamana anterioara (", avgRdPrev, ")"), /*#__PURE__*/React.createElement("div", {
-      style: {
-        display: "flex",
-        alignItems: "flex-end",
-        gap: 3,
-        height: 34
-      }
-    }, rd7.map((x, i) => /*#__PURE__*/React.createElement("div", {
-      key: i,
-      title: `${x.date}: ${x.readiness}`,
-      style: {
-        flex: 1,
-        height: `${Math.max(8, x.readiness)}%`,
-        background: x.readiness >= 85 ? "#34d399" : x.readiness >= 70 ? "#6366f1" : "#f59e0b",
-        borderRadius: "2px 2px 0 0",
-        opacity: .85
-      }
-    }))), /*#__PURE__*/React.createElement("div", {
-      style: {
-        fontSize: 7,
-        color: "#475569",
-        marginTop: 4,
-        textAlign: "center"
-      }
-    }, "85+ excelent \u00B7 70-84 ok \u00B7 sub 70 recuperare slaba")));
+    }, avgR, "/5"))));
   })(), (() => {
-    const topLifts = ["Bench Press", "Squats", "Romanian Deadlift", "Pull-ups / Lat Pulldown", "Barbell Rows", "Leg Press"];
+    const topLifts = ["Bench Press", "Squats", "Overhead Press", "Pull-ups / Lat Pulldown", "Leg Press", "Chest-Supported Row"];
     const lifts = topLifts.filter(n => liftLog[n] && liftLog[n].length >= 2);
     if (lifts.length === 0) return null;
     return /*#__PURE__*/React.createElement("div", {
@@ -7810,59 +7674,7 @@ function App() {
     style: {
       color: "#ef4444"
     }
-  }, w.muscle, "kg\uD83D\uDCAA"), /*#__PURE__*/React.createElement("button", {
-    onClick: () => {
-      const realIdx = weightLog.length - 1 - i;
-      const nw = prompt(`Greutate (kg) pentru ${w.date}:`, w.weight);
-      if (nw === null) return;
-      const nwNum = parseFloat(String(nw).replace(",", "."));
-      if (isNaN(nwNum) || nwNum <= 0) {
-        setNotif("Valoare invalida");
-        return;
-      }
-      const nf = prompt("Body fat % (lasa gol daca nu ai):", w.fat != null ? w.fat : "");
-      const nm = prompt("Masa musculara kg (lasa gol daca nu ai):", w.muscle != null ? w.muscle : "");
-      const nl = weightLog.map((x, xi) => xi !== realIdx ? x : {
-        ...x,
-        weight: nwNum,
-        fat: nf ? parseFloat(String(nf).replace(",", ".")) : null,
-        muscle: nm ? parseFloat(String(nm).replace(",", ".")) : null
-      });
-      update({
-        weightLog: nl
-      });
-      setNotif("\u2713 Cantarire actualizata");
-    },
-    style: {
-      fontSize: 9,
-      padding: "2px 6px",
-      background: "rgba(99,102,241,.1)",
-      border: "1px solid rgba(99,102,241,.3)",
-      borderRadius: 4,
-      color: "#a5b4fc",
-      cursor: "pointer",
-      fontFamily: "inherit"
-    }
-  }, "\u270E"), /*#__PURE__*/React.createElement("button", {
-    onClick: () => {
-      if (!confirm(`Stergi cantarirea din ${w.date} (${w.weight}kg)?`)) return;
-      const realIdx = weightLog.length - 1 - i;
-      update({
-        weightLog: weightLog.filter((x, xi) => xi !== realIdx)
-      });
-      setNotif("\uD83D\uDDD1 Cantarire stearsa");
-    },
-    style: {
-      fontSize: 9,
-      padding: "2px 6px",
-      background: "rgba(248,113,113,.08)",
-      border: "1px solid rgba(248,113,113,.25)",
-      borderRadius: 4,
-      color: "#f87171",
-      cursor: "pointer",
-      fontFamily: "inherit"
-    }
-  }, "\u2715")))))), tab === "rank" && /*#__PURE__*/React.createElement("div", null, RANKS.map(r => {
+  }, w.muscle, "kg\uD83D\uDCAA")))))), tab === "rank" && /*#__PURE__*/React.createElement("div", null, RANKS.map(r => {
     const cur = r.name === rank.name;
     const ach = level >= r.min;
     return /*#__PURE__*/React.createElement("div", {

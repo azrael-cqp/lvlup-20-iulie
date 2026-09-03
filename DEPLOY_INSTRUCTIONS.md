@@ -12,72 +12,95 @@
 4. Commit → asteapta 2-3 min → Safari privat / clear cache
 5. Datele tale (IndexedDB) raman intacte
 
-## CHANGELOG — Update 13 August 2026
+---
 
-### 1. Somn: ore cu zecimale
-Campul era `type="number"` cu `step="0.5"`, de aceea iOS te forta la
-jumatati de ora. Acum e camp text cu tastatura decimala: poti pune 7.2,
-6.8, orice. Reparat in ambele locuri (tab BODY si modalul de reminder).
+# CHANGELOG — Update 3 Septembrie 2026
 
-### 2. Readiness Score (Oura) + trend
-- Camp nou optional (0-100) langa ore si rating, in ambele locuri.
-- Panou nou in BODY: media pe 7 zile, diferenta fata de saptamana
-  anterioara (▲/▼), si grafic cu barele ultimelor 7 zile.
-- Cod culori: 85+ verde (excelent) · 70-84 albastru (ok) · sub 70
-  portocaliu (recuperare slaba).
+## 1. Romanian Deadlift scos din program
 
-### 3. Plank unificat
-"Weighted Plank" ca exercitiu separat a disparut complet. In ziua de
-Miercuri (LEGS) finisher-ul e acum "Plank" — acelasi exercitiu cu
-progresia pe 4 niveluri din bonus quest. Un singur plank, un singur
-nivel, peste tot. Se logheaza in secunde, fara camp de greutate.
+Motiv: durere lombara. RDL-ul e cea mai mare incarcare axiala din program dupa
+squat, iar in ziua de Legs venea la 20 de minute dupa Squat 110kg.
 
-### 4. Scos Cold Shower din bonus quests
+- **Miercuri LEGS**: RDL → **Leg Extension** (3×12-15, pauza 90s).
+  Izolare cvadriceps, zero compresie pe coloana. Se logheaza ca masina:
+  **doar placile**.
+- **Marti PULL**: RDL **eliminat complet**, fara inlocuitor. Era un hinge
+  intr-o zi de spate; ischiogambierii sunt acoperiti miercuri de Leg Curls.
+  Ziua de Pull are acum 8 exercitii.
 
-### 5. Hanging Leg Raises — confirmat doar reps, fara greutate
+XP-ul se muta corespunzator: cvadriceps castiga, hamstrings ramane pe Leg Curls.
 
-### 6. Boss quests = actiuni independente (schimbare mare)
-Inainte, boss quest-urile erau indicatii de tehnica pentru exercitii din
-PPL ("Rows — strange omoplatii 1s"), deci nu puteai avansa decat in ziua
-aia si nu adaugau nimic in plus.
+## 2. Barbell Rows → Chest-Supported Row
 
-Acum toate 35 sunt actiuni de sine statatoare, pe care le poti face
-acasa sau in plus la sala, in ORICE zi. Exemple:
-- "Band Rows (3x20, strange omoplatii) — cu banda"
-- "Push-ups (3x max, pauza 1s jos) — acasa"
-- "Leg Raises pe podea (3x20) — acasa"
-- "Dead Hang (3x max) SAU Band Pull-Aparts (3x25)"
-- "Monster Walks cu banda (3x20 pasi) — cu banda"
+Piept sprijinit pe banca inclinata la 30-45°, mijlocul complet descarcat.
+Aceiasi muschi (romboizi, dorsal, trapez mijlociu), zero sustinere din coloana.
 
-### 7. Bosii invinsi dispar din lista
-Odata invins, un boss nu mai apare in AVAILABLE BOSSES. Rămâne doar in
-BATTLE HISTORY (care oricum arata ultimele 5).
+- Marti PULL si Vineri PULL: 4×10-12, pauza 120s
+- Se logheaza ca **DB — greutatea unei gantere**, increment 2kg
+- Istoricul vechi de la Barbell Rows ramane in baza de date, dar exercitiul
+  porneste de la zero — sunt miscari diferite, nu are sens sa mosteneasca
+  recomandarile
 
-### 8. Boss deload scos
-"The Deload Phoenix" eliminat din biblioteca — necesita adaptarea
-intregului PPL. Revenim daca schimbam programul.
+## 3. Somn in format ore:minute
 
-### 9. Bosi noi (4 adaugati — acum 22 in total)
-- 💪 Iron Warden — biceps (+55 XP / 21 zile)
-- 🔱 Bronze Sentinel — triceps (+55 XP / 21 zile)
-- 👑 Crowned Monarch — glutes (+60 XP / 21 zile)
-- 🌙 Dream Keeper — streak 21 zile, focus pe somn si Readiness
+Pana acum campul era zecimal si 6.17 era interpretat ca 6.17 ore (6h10m).
+Acum sunt **doua campuri separate**: ore si minute.
 
-### 10. Weight log editabil
-Fiecare cantarire din lista are acum doua butoane:
-- **✎** editeaza (greutate, BF%, masa musculara)
-- **✕** sterge (cu confirmare)
+- Se aplica si in logger-ul din tab-ul de statistici, si in modalul de reminder
+- Afisajele arata `6h17m` in loc de `6.2h`
+- **Migrare automata a intregului istoric**: toate cele ~55 de intrari vechi
+  au fost reinterpretate ca HH:MM (5.34 → 5h34m, 8.17 → 8h17m, 7.2 → 7h20m).
+  Migrarea ruleaza o singura data, la prima deschidere dupa deploy, si se
+  salveaza imediat. Dubla protectie (flag in date + flag in localStorage) ca
+  sa nu se poata rula de doua ori.
 
-## DE FACUT IMEDIAT DUPA DEPLOY
-Corecteaza cantarirea din 13 Aug: e salvata gresit ca **115.15kg**,
-valoarea reala e **105.15kg**. Tab BODY → gaseste randul din 13/08 →
-apasa ✎ → pune 105.15. Altfel graficul arata un salt fals de 9kg si
-faza-2 (tinta BF 20%) se comporta ciudat.
+## 4. Sauna scoasa complet
+
+- **Obiectivele saptamanale** contineau Sauna #1, #2, #3 si Yoga 30 min.
+  Toate scoase. Sectiunea WEEKLY se ascunde automat cand e goala, deci nu mai
+  vezi "0/0" pe ecran si nu mai iei penalizare de 95 XP pe saptamana pentru
+  ceva ce nu faci.
+- Quest-ul de sambata "Inot + Sauna" → **"Inot"**, aceleasi 30 XP.
+
+## 5. Yoga → Mobility 5 min (acasa)
+
+AGI era blocat la 16 pentru ca yoga era singura sursa si nu o faceai niciodata.
+Inlocuit cu un quest zilnic realist:
+
+**Mobility 5 min (acasa)** · 15 XP · AGI · disponibil in fiecare zi
+Hip opener 90/90, rotatii toracice, ankle rocks, cat-cow. Fara echipament,
+seara, cand esti oricum acasa.
+
+## 6. Curatare intrari eronate
+
+Sterse automat la prima deschidere:
+- **Barbell Rows, 1 septembrie** (100×12 — bifat gresit, nu s-a facut)
+- **Romanian Deadlift, 2 septembrie** (avea si typo 1001kg — nu s-a facut)
+
+Restul istoricului ramane neatins.
+
+## 7. Ajustari de consecventa
+
+- Boss "The Silent Reaper": target RDL 90×8 → **Leg Curls 55×15**
+- Boss quest "Extra RDL Set" → "Extra Leg Curls (2x15)"
+- Boss quests cu yoga → "Stretching 15 min (acasa)" / "Mobility Flow (15 min)"
+- Bonus sambata "Extra RDL Set" → **"Extra Leg Extension (2x15)"**, XP pe quads
+- Alternativele de swap actualizate peste tot (fara RDL, fara Barbell Rows)
+- Graficul de progresie: RDL si Barbell Rows scoase, adaugate **Overhead Press**
+  si **Chest-Supported Row**
+
+---
 
 ## Verificare dupa deploy
-- BODY → Sleep Tracker: poti scrie 7.2 la ore; apare campul Readiness
-- BODY: dupa 2 zile cu Readiness logat, apare panoul cu trend
-- PPL Miercuri: finisher-ul e "Plank" (nu Weighted Plank), doar secunde
-- BOSS: bosii invinsi nu mai apar in lista; boss quest-urile sunt
-  actiuni de facut acasa
-- BODY → lista cantaririlor: butoanele ✎ si ✕ pe fiecare rand
+
+1. **Marti (PULL)**: al doilea exercitiu e Chest-Supported Row, nu mai apare RDL
+2. **Miercuri (LEGS)**: al doilea exercitiu e Leg Extension
+3. **Tab statistici → somn**: doua campuri, `ore : min`. Mediile arata `6h36m`
+4. **Quest-uri zilnice**: apare "Mobility 5 min (acasa)" cu iconita 🤸
+5. **Sectiunea WEEKLY**: nu mai exista
+6. **Sambata**: quest-ul e "Inot", fara sauna
+7. Verifica in istoricul de lifturi ca intrarile din 1 si 2 septembrie au
+   disparut de la Rows si RDL
+
+Daca ceva nu apare, e cache: Safari tab privat sau sterge datele site-ului
+(nu si IndexedDB — alea sunt datele tale).
