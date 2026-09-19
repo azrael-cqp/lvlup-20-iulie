@@ -14,93 +14,85 @@
 
 ---
 
-# CHANGELOG — Update 3 Septembrie 2026
+# CHANGELOG — Update 12 Septembrie 2026
 
-## 1. Romanian Deadlift scos din program
+## 1. PROGRAM NOU: PPL + Upper/Lower
 
-Motiv: durere lombara. RDL-ul e cea mai mare incarcare axiala din program dupa
-squat, iar in ziua de Legs venea la 20 de minute dupa Squat 110kg.
+**Luni PUSH · Marti PULL · Miercuri LEGS · Joi UPPER · Vineri LOWER**
 
-- **Miercuri LEGS**: RDL → **Leg Extension** (3×12-15, pauza 90s).
-  Izolare cvadriceps, zero compresie pe coloana. Se logheaza ca masina:
-  **doar placile**.
-- **Marti PULL**: RDL **eliminat complet**, fara inlocuitor. Era un hinge
-  intr-o zi de spate; ischiogambierii sunt acoperiti miercuri de Leg Curls.
-  Ziua de Pull are acum 8 exercitii.
+Doua schimbari structurale:
+- **Picioarele trec de la o zi la doua.** Miercuri = zi grea (Squat 4x6-8). Vineri = zi de volum, unilaterala, fara incarcare axiala.
+- **Pieptul primeste a doua zi.** Luni (Bench + DB Incline + Cable Flyes) si Joi (DB Bench + Cable Flyes).
 
-XP-ul se muta corespunzator: cvadriceps castiga, hamstrings ramane pe Leg Curls.
+### Volum saptamanal rezultat (serii)
 
-## 2. Barbell Rows → Chest-Supported Row
+| Grupa | Serii | Observatie |
+|---|---|---|
+| Cvadriceps | 22 | de la ~10 |
+| **Piept** | **18** | **de la ~14** |
+| Spate | 17 | usor redus, e grupa cea mai dezvoltata |
+| Umeri | 15 | |
+| Fesieri | 13 | |
+| Core | 12 | finisher in fiecare zi |
+| Biceps | 9 | |
+| Gambe | 8 | doua zile in loc de una |
+| Triceps | 6 | + Diamond Push-ups ca bonus |
+| Ischiogambieri | 6 | Leg Curls pe ambele zile de picioare |
 
-Piept sprijinit pe banca inclinata la 30-45°, mijlocul complet descarcat.
-Aceiasi muschi (romboizi, dorsal, trapez mijlociu), zero sustinere din coloana.
+**Zero hinge de sold in tot programul** — fara RDL, fara Good Mornings, fara Barbell Rows in picioare.
 
-- Marti PULL si Vineri PULL: 4×10-12, pauza 120s
-- Se logheaza ca **DB — greutatea unei gantere**, increment 2kg
-- Istoricul vechi de la Barbell Rows ramane in baza de date, dar exercitiul
-  porneste de la zero — sunt miscari diferite, nu are sens sa mosteneasca
-  recomandarile
+### Exercitii noi
+- **Bulgarian Split Squat** (Vineri) — unilateral, se logheaza ca DB, increment 2kg
+- **Hip Thrust** (Vineri) — fesieri fara hinge, se logheaza ca aparat (doar placile)
 
-## 3. Somn in format ore:minute
+### Nota pe Bench si DB Bench
+Ambele au acum in descriere: fara spotter, plafonul de siguranta e 100kg. Peste asta, progresezi din repetari.
 
-Pana acum campul era zecimal si 6.17 era interpretat ca 6.17 ore (6h10m).
-Acum sunt **doua campuri separate**: ore si minute.
+## 2. Chest-Supported Row reconfigurat ca APARAT
 
-- Se aplica si in logger-ul din tab-ul de statistici, si in modalul de reminder
-- Afisajele arata `6h17m` in loc de `6.2h`
-- **Migrare automata a intregului istoric**: toate cele ~55 de intrari vechi
-  au fost reinterpretate ca HH:MM (5.34 → 5h34m, 8.17 → 8h17m, 7.2 → 7h20m).
-  Migrarea ruleaza o singura data, la prima deschidere dupa deploy, si se
-  salveaza imediat. Dubla protectie (flag in date + flag in localStorage) ca
-  sa nu se poata rula de doua ori.
+Era setat ca gantere (greutatea unei gantere, increment 2kg). Acum e aparat: **se logheaza doar placile**, increment 5kg. Recomandarile vor fi corecte de acum inainte.
 
-## 4. Sauna scoasa complet
+## 3. Bonus de piept raspandit in saptamana
 
-- **Obiectivele saptamanale** contineau Sauna #1, #2, #3 si Yoga 30 min.
-  Toate scoase. Sectiunea WEEKLY se ascunde automat cand e goala, deci nu mai
-  vezi "0/0" pe ecran si nu mai iei penalizare de 95 XP pe saptamana pentru
-  ceva ce nu faci.
-- Quest-ul de sambata "Inot + Sauna" → **"Inot"**, aceleasi 30 XP.
+Ca la core, dar pe piept — apar in zilele fara Push:
 
-## 5. Yoga → Mobility 5 min (acasa)
+| Zi | Quest | XP |
+|---|---|---|
+| Marti | Push-ups la refuz (3 seturi) | 30 |
+| Miercuri | Incline Push-ups (3x15) | 25 |
+| Vineri | Diamond Push-ups (3 seturi) | 25 |
 
-AGI era blocat la 16 pentru ca yoga era singura sursa si nu o faceai niciodata.
-Inlocuit cu un quest zilnic realist:
+Toate adauga XP pe chest (si triceps), acasa, fara sa incarce recuperarea.
 
-**Mobility 5 min (acasa)** · 15 XP · AGI · disponibil in fiecare zi
-Hip opener 90/90, rotatii toracice, ankle rocks, cat-cow. Fara echipament,
-seara, cand esti oricum acasa.
+## 4. Mobility — instructiuni pas cu pas
 
-## 6. Curatare intrari eronate
+Quest-ul avea o singura linie de text la 8px, imposibil de urmarit. Acum, cand apare in BONUS, se deschide sub el **un panou cu cei 4 pasi la text lizibil (11-12px)**:
 
-Sterse automat la prima deschidere:
-- **Barbell Rows, 1 septembrie** (100×12 — bifat gresit, nu s-a facut)
-- **Romanian Deadlift, 2 septembrie** (avea si typo 1001kg — nu s-a facut)
+1. **90/90 Hip Switch** — 90 secunde
+2. **Rotatii toracice** — 60 secunde
+3. **Ankle Rocks** — 60 secunde
+4. **Cat-Cow** — 60 secunde
 
-Restul istoricului ramane neatins.
+Fiecare cu explicatie completa de executie. E disponibil in fiecare zi si e singura sursa de AGI (blocat la 16 de luni de zile).
 
-## 7. Ajustari de consecventa
+## 5. READINESS se poate loga
 
-- Boss "The Silent Reaper": target RDL 90×8 → **Leg Curls 55×15**
-- Boss quest "Extra RDL Set" → "Extra Leg Curls (2x15)"
-- Boss quests cu yoga → "Stretching 15 min (acasa)" / "Mobility Flow (15 min)"
-- Bonus sambata "Extra RDL Set" → **"Extra Leg Extension (2x15)"**, XP pe quads
-- Alternativele de swap actualizate peste tot (fara RDL, fara Barbell Rows)
-- Graficul de progresie: RDL si Barbell Rows scoase, adaugate **Overhead Press**
-  si **Chest-Supported Row**
+Camp nou in logger-ul de somn, sub ore/minute si stelute: **READINESS 0-100**, optional. Valoarea din Oura. Apare si in notificare (`R74`).
+
+## 6. Cold Shower scos
+
+Eliminat din quest-urile bonus.
 
 ---
 
 ## Verificare dupa deploy
 
-1. **Marti (PULL)**: al doilea exercitiu e Chest-Supported Row, nu mai apare RDL
-2. **Miercuri (LEGS)**: al doilea exercitiu e Leg Extension
-3. **Tab statistici → somn**: doua campuri, `ore : min`. Mediile arata `6h36m`
-4. **Quest-uri zilnice**: apare "Mobility 5 min (acasa)" cu iconita 🤸
-5. **Sectiunea WEEKLY**: nu mai exista
-6. **Sambata**: quest-ul e "Inot", fara sauna
-7. Verifica in istoricul de lifturi ca intrarile din 1 si 2 septembrie au
-   disparut de la Rows si RDL
+1. **Tab PPL**: Joi scrie UPPER (portocaliu), Vineri scrie LOWER (violet)
+2. **Vineri**: primul exercitiu e Bulgarian Split Squat, al cincilea e Hip Thrust
+3. **Marti**: apare bonusul "Push-ups la refuz"
+4. **Orice zi**: quest-ul Mobility are sub el panoul violet cu cei 4 pasi
+5. **Logger somn**: exista randul READINESS
+6. **Bonus**: Cold Shower nu mai apare nicaieri
+7. **Chest-Supported Row**: recomandarea trebuie sa fie in placi, nu in kg de gantera
 
-Daca ceva nu apare, e cache: Safari tab privat sau sterge datele site-ului
-(nu si IndexedDB — alea sunt datele tale).
+Testat inainte de livrare intr-un browser simulat cu datele tale: zero erori de randare.

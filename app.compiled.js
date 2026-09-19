@@ -163,48 +163,48 @@ const PPL = {
     color: "#ef4444",
     icon: "🔴",
     exercises: [{
+      name: "Bench Press",
+      sets: "4×6-8",
+      muscle: "Chest",
+      rest: 180,
+      desc: "⭐ PRIORITATE PIEPT. Culcat, priza putin mai lata decat umerii. Coboara controlat la piept, impinge exploziv. FARA SPOTTER: plafonul de siguranta e 100kg — peste, progresezi din repetari, nu din greutate."
+    }, {
       name: "DB Incline Bench Press",
       sets: "4×8-10",
       muscle: "Upper Chest",
-      rest: 150,
-      desc: "⭐ ROTATED from flat Bench (90kg plateau). Set bench 30-45°. Press dumbbells up from upper chest, squeezing at top. Greater range, fixes plateau."
-    }, {
-      name: "Bench Press",
-      sets: "3×6-8",
-      muscle: "Chest",
-      rest: 180,
-      desc: "Reduced volume — focus on heavy triples to break 90kg plateau. Lie flat, grip slightly wider than shoulders. Lower to chest, press up explosively."
+      rest: 120,
+      desc: "Banca la 30-45 grade. Coboara ganterele adanc pe langa piept, impinge in sus si usor spre interior. Amplitudine mai mare decat la haltera — principalul constructor de piept superior."
     }, {
       name: "Overhead Press",
-      sets: "4×8-10",
+      sets: "3×8-10",
       muscle: "Shoulders",
       rest: 150,
-      desc: "Stand with bar at shoulder height. Press straight overhead, locking elbows at top. Brace core throughout."
+      desc: "In picioare, bara la nivelul umerilor. Impinge drept deasupra capului, blocheaza cotul sus. Abdomen contractat tot setul, fara arcuire lombara."
+    }, {
+      name: "Cable Flyes",
+      sets: "3×12-15",
+      muscle: "Chest",
+      rest: 75,
+      desc: "⭐ VOLUM PIEPT. Cablurile la nivelul umerilor. Adu manerele in fata pieptului ca o imbratisare, strange puternic 1s la mijloc. Tensiune constanta — nu lasa greutatea sa cada."
     }, {
       name: "Lateral Raises",
-      sets: "4×12-15",
+      sets: "3×12-15",
       muscle: "Side Delts",
-      rest: 75,
-      desc: "Stand with dumbbells at sides. Raise arms out to sides until parallel with floor. Slight bend in elbows, control the weight."
+      rest: 60,
+      desc: "Ganterele pe langa corp. Ridica lateral pana la nivelul umerilor, cot usor indoit. Greutati mici, control total — fara balans din solduri."
     }, {
       name: "Tricep Pushdowns",
       sets: "3×12-15",
       muscle: "Triceps",
       rest: 75,
-      desc: "Cable machine, rope or bar attachment. Push down until arms are straight, squeeze triceps. Keep elbows pinned to sides."
-    }, {
-      name: "Overhead Tricep Ext.",
-      sets: "3×12-15",
-      muscle: "Triceps",
-      rest: 75,
-      desc: "Hold dumbbell or rope overhead. Lower behind head by bending elbows, then extend back up. Feel the stretch at bottom."
+      desc: "Cablu sus, coarda sau bara. Coatele lipite de corp, impinge in jos pana la extensie completa, strange tricepsul."
     }, {
       name: "Cable Crunches",
       sets: "3×15",
       muscle: "Core",
       rest: 60,
       finisher: true,
-      desc: "🎯 CORE FINISHER (5 min). Ingenuncheat la cablu, franghia langa cap. Ruleaza coloana in jos contractand abdomenul, nu tragi cu bratele. Core-ul e grupa ta cea mai slaba — finisher scurt aici de cateva ori/saptamana."
+      desc: "🎯 CORE FINISHER (5 min). Ingenuncheat la cablu, coarda langa cap. Ruleaza coloana in jos contractand abdomenul, nu tragi cu bratele."
     }]
   },
   2: {
@@ -216,55 +216,45 @@ const PPL = {
       name: "Pull-ups / Lat Pulldown",
       sets: "4×8-10",
       muscle: "Lats",
-      rest: 150,
-      desc: "Grip bar wider than shoulders. Pull yourself up (or pull bar down) until chin clears bar. Squeeze lats at top, slow negative."
+      rest: 120,
+      desc: "Priza mai lata decat umerii. Trage bara pana la piept, strange dorsalii jos, revenire controlata. Fara balans din corp."
     }, {
       name: "Chest-Supported Row",
       sets: "4×10-12",
       muscle: "Upper Back",
       rest: 120,
-      desc: "Piept sprijinit pe banca inclinata la 30-45°. Trage ganterele spre solduri, strange omoplatii 1s la varf. Mijlocul e complet descarcat — coloana nu sustine nimic."
+      desc: "APARAT cu piept sprijinit. Trage manerele spre solduri, strange omoplatii 1s la varf. Mijlocul complet descarcat — coloana nu sustine nimic. Se logheaza DOAR placile."
     }, {
       name: "Seated Cable Row",
       sets: "3×10-12",
       muscle: "Mid Back",
-      rest: 120,
-      desc: "Sit upright, pull handle to lower chest. Squeeze shoulder blades, then control the release. Don't lean back excessively."
+      rest: 90,
+      desc: "Tors fix la 90 grade tot setul. Trage manerul la abdomenul inferior, strange omoplatii, revenire controlata. Nu te lasa pe spate."
     }, {
       name: "Face Pulls",
-      sets: "3×15-20",
+      sets: "3×15-18",
       muscle: "Rear Delts",
-      rest: 60,
-      desc: "Cable at face height with rope. Pull towards face, separating rope ends. Rotate externally at end. Great for shoulder health."
+      rest: 45,
+      desc: "Cablu la nivelul fetei cu coarda. Trage spre frunte desfacand coarda, rotatie externa la final. Sanatatea umarului."
     }, {
       name: "Barbell Curls",
       sets: "3×10-12",
       muscle: "Biceps",
-      rest: 90,
-      desc: "Stand with bar, underhand grip. Curl bar up keeping elbows stationary. Squeeze at top, lower slowly. No swinging."
+      rest: 75,
+      desc: "ASEZAT sau la pupitru (nu in picioare — scoate mijlocul din ecuatie si elimina balansul). Coatele fixe, strange sus, coboara lent."
     }, {
       name: "Hammer Curls",
       sets: "3×10-12",
       muscle: "Biceps",
-      rest: 75,
-      desc: "Hold dumbbells with neutral grip (palms facing in). Curl up, squeeze. Works brachialis and forearms too."
+      rest: 60,
+      desc: "Priza neutra, palmele fata in fata. Lucreaza si brahialul si antebratul. Asezat pentru control maxim."
     }, {
       name: "Hanging Leg Raises",
-      sets: "3×12",
+      sets: "3×15",
       muscle: "Core",
       rest: 60,
       finisher: true,
-      repsOnly: true,
-      desc: "🎯 CORE FINISHER (5-6 min). Atarnat de bara, ridica picioarele controlat pana la 90° (sau genunchii la piept daca e greu). Fara balans. Lucreaza abdomenul inferior — exact zona ta problematica. Progresezi prin REPS, nu greutate."
-    }, {
-      name: "Turkish Get-Up / Windmill",
-      sets: "3×5 fiecare parte",
-      muscle: "Mobilitate/Core",
-      rest: 60,
-      finisher: true,
-      repsOnly: true,
-      agiFinisher: true,
-      desc: "🌀 AGI FINISHER (5-8 min). NU la epuizare — e mobilitate sub incarcatura, nu forta. TURKISH GET-UP: culcat pe spate, o gantera/kettlebell sus intr-o mana, privirea mereu la ea. Te ridici pas cu pas pana in stand, apoi cobori pe acelasi drum. WINDMILL: greutatea sus intr-o mana, picioarele drepte, impinge soldul lateral si coboara cealalta mana spre podea. LUCREAZA: mobilitate umar si sold, core anti-flexie laterala, stabilitate — creste AGI. Incepe FOARTE usor (4-8kg) ca sa inveti tiparul."
+      desc: "🎯 CORE FINISHER. Atarnat de bara, ridica picioarele controlat la 90 grade. Fara balans. Abdomen inferior — exact zona ta problematica."
     }]
   },
   3: {
@@ -277,153 +267,150 @@ const PPL = {
       sets: "4×6-8",
       muscle: "Quads/Glutes",
       rest: 180,
-      desc: "Bar on upper back, feet shoulder-width. Sit back and down until thighs are parallel or below. Drive through heels, chest up."
-    }, {
-      name: "Leg Extension",
-      sets: "3×12-15",
-      muscle: "Quads",
-      rest: 90,
-      desc: "Izolare cvadriceps, zero incarcare axiala pe coloana. Spatele lipit de scaun, extinde controlat, pauza 1s sus, coborare lenta. Nu bloca genunchiul brusc."
+      desc: "⭐ ZIUA GREA DE PICIOARE. Bara pe trapez, picioarele la latimea umerilor. Coboara pana coapsa e paralela sau sub, impinge din calcaie, pieptul sus."
     }, {
       name: "Leg Press",
       sets: "3×10-12",
       muscle: "Quads",
       rest: 120,
-      desc: "Feet shoulder-width on platform. Lower weight until knees at ~90°. Press through full foot. Don't lock knees completely."
+      desc: "Picioarele la latimea umerilor pe platforma. Coboara pana genunchii ajung la ~90 grade. Impinge din toata talpa, nu bloca genunchii complet."
     }, {
-      name: "Walking Lunges",
-      sets: "3×12 ea.",
-      muscle: "Quads/Glutes",
+      name: "Leg Extension",
+      sets: "3×12-15",
+      muscle: "Quads",
       rest: 90,
-      desc: "Step forward into lunge, back knee nearly touching floor. Push through front heel to next step. Keep torso upright."
+      desc: "Izolare cvadriceps, zero incarcare axiala. Spatele lipit de scaun, pauza 1s sus, coborare lenta."
     }, {
       name: "Leg Curls",
-      sets: "4×12-15",
+      sets: "3×12-15",
       muscle: "Hamstrings",
       rest: 90,
-      desc: "⭐ PRIORITY. Lying or seated machine. Curl weight by bending knees, squeeze hamstrings at peak contraction. Slow negative."
+      desc: "Culcat sau asezat. Indoaie genunchii contractand ischiogambierii, pauza sus, negativ lent. Sursa principala de hamstrings din program."
+    }, {
+      name: "Walking Lunges",
+      sets: "3×12 /picior",
+      muscle: "Quads/Glutes",
+      rest: 90,
+      desc: "Pas inainte in fandare, genunchiul din spate aproape de podea. Impinge din calcaiul din fata spre pasul urmator. Tors vertical."
     }, {
       name: "Calf Raises",
-      sets: "5×15-20",
+      sets: "4×15-20",
       muscle: "Calves",
       rest: 60,
-      desc: "⭐ PRIORITY (Calves 20 XP - weak). 5 sets! Stand on edge of step, heels hanging off. Rise up on toes as high as possible, hold 1 sec, lower below step level for full stretch."
+      desc: "In picioare pe treapta, gantera intr-o mana. Calcaiul coboara sub nivelul treptei pentru intindere completa, ridicare maxima pe varfuri, pauza 1s sus."
     }, {
       name: "Weighted Plank",
-      sets: "3×45s",
+      sets: "3×45-60s",
       muscle: "Core",
       rest: 60,
       finisher: true,
-      desc: "🎯 CORE FINISHER (5 min). Plank pe antebrate, disc pe spate daca poti. Corp drept, fund jos, abdomen contractat. 45s pe set. Intareste core-ul stabilizator dupa picioare."
+      hold: true,
+      desc: "🎯 CORE FINISHER. Plank pe antebrate, disc pe spate. Corp drept, fund jos, abdomen contractat."
     }]
   },
   4: {
     day: "Thursday",
-    type: "PUSH",
-    color: "#ef4444",
-    icon: "🔴",
+    type: "UPPER",
+    color: "#f97316",
+    icon: "🟠",
     exercises: [{
       name: "DB Bench Press",
-      sets: "4×10-12",
+      sets: "4×8-10",
       muscle: "Chest",
+      rest: 150,
+      desc: "⭐ A DOUA ZI DE PIEPT. Ganterele permit amplitudine mai mare decat haltera. Coboara adanc, impinge in sus si usor spre interior. Sigur si fara spotter."
+    }, {
+      name: "Chest-Supported Row",
+      sets: "3×10-12",
+      muscle: "Upper Back",
       rest: 120,
-      desc: "Dumbbells allow greater range of motion than barbell. Lower deeper, press up and slightly inward. Great for chest activation."
+      desc: "APARAT. Al doilea stimul de tragere al saptamanii, volum moderat. Torsul sprijinit tot setul. Se logheaza DOAR placile."
     }, {
       name: "Arnold Press",
-      sets: "4×10-12",
+      sets: "3×10-12",
       muscle: "Shoulders",
       rest: 120,
-      desc: "Start with palms facing you at shoulder height. Rotate palms outward as you press up. Reverse on the way down. Full shoulder activation."
+      desc: "Pornesti cu palmele spre tine la nivelul umerilor. Roteste palmele in exterior in timp ce impingi sus. Invers la coborare."
     }, {
       name: "Cable Flyes",
       sets: "3×12-15",
       muscle: "Chest",
-      rest: 90,
-      desc: "Cables at shoulder height. Bring handles together in front of chest in hugging motion. Squeeze chest hard at center."
-    }, {
-      name: "Cable Front Raises",
-      sets: "3×12-15",
-      muscle: "Front Delts",
       rest: 75,
-      desc: "La cablu jos cu coarda. Trage in fata pana la nivelul ochilor, palmele in jos. Tensiune constanta pe tot parcursul. Greutati mai mici decat la gantere sunt normale - control mai bun, contractie mai buna. Fara balans."
-    }, {
-      name: "Skull Crushers",
-      sets: "3×10-12",
-      muscle: "Triceps",
-      rest: 90,
-      desc: "Lie on bench, hold bar/dumbbells above face. Bend only at elbows, lowering weight towards forehead. Extend back up. Keep elbows still."
-    }, {
-      name: "Rope Pushdown",
-      sets: "3×12-15",
-      muscle: "Triceps",
-      rest: 75,
-      desc: "La cablu sus cu coarda. Coatele lipite de corp, impinge in jos si desfa coarda la final apasand tricepsul. Al doilea exercitiu de triceps: loveste capul lateral, complementar cu Skull Crushers care lovesc capul lung."
-    }, {
-      name: "Decline Sit-ups",
-      sets: "3×15",
-      muscle: "Core",
-      rest: 60,
-      finisher: true,
-      desc: "🎯 CORE FINISHER (5 min). Pe banca inclinata negativ, mainile la piept sau la tample. Ridica controlat, coboara lent fara sa te lasi liber. Pentru progresie tine un disc la piept."
-    }, {
-      name: "Windmill / Turkish Get-Up",
-      sets: "3×5 fiecare parte",
-      muscle: "Mobilitate/Core",
-      rest: 60,
-      finisher: true,
-      repsOnly: true,
-      agiFinisher: true,
-      desc: "🌀 AGI FINISHER (5-8 min). NU la epuizare — mobilitate sub incarcatura. WINDMILL: greutate sus intr-o mana, privirea la ea, picioarele drepte, impinge soldul lateral si coboara cealalta mana spre podea. Revino controlat. TURKISH GET-UP: din culcat, te ridici pas cu pas cu greutatea sus, apoi cobori pe acelasi drum. LUCREAZA: mobilitate umar si sold, core anti-flexie laterala — creste AGI. Greutati mici la inceput."
-    }]
-  },
-  5: {
-    day: "Friday",
-    type: "PULL",
-    color: "#3b82f6",
-    icon: "🔵",
-    exercises: [{
-      name: "Chest-Supported Row",
-      sets: "4×10-12",
-      muscle: "Back",
-      rest: 120,
-      desc: "A doua zi de Pull: priza neutra sau banca la 30° pentru alt unghi. Torsul sprijinit tot setul, fara balans din solduri."
-    }, {
-      name: "Single Arm DB Row",
-      sets: "3×10-12",
-      muscle: "Lats",
-      rest: 90,
-      desc: "One knee on bench, row dumbbell to hip. Squeeze lat at top. Great for fixing imbalances between sides."
+      desc: "⭐ VOLUM PIEPT. A doua sedinta din saptamana. Poti varia unghiul: cabluri sus (piept inferior) sau jos (piept superior)."
     }, {
       name: "Cable Pullover",
       sets: "3×12-15",
       muscle: "Lats",
       rest: 75,
-      desc: "Stand facing cable machine, straight bar high. Pull bar down in arc motion to thighs, keeping arms nearly straight. Feel the lat stretch."
+      desc: "In picioare la cablu sus, bara dreapta. Trage in arc pana la coapse cu bratele aproape intinse. Simti intinderea dorsalului."
     }, {
       name: "Reverse Flyes",
       sets: "3×15",
       muscle: "Rear Delts",
-      rest: 60,
-      desc: "Bent over or on incline bench. Raise dumbbells out to sides, squeezing rear delts. Light weight, high control."
+      rest: 45,
+      desc: "Aplecat sau pe banca inclinata. Ridica ganterele lateral strangand deltoidul posterior. Greutate mica, control mare."
+    }, {
+      name: "Skull Crushers",
+      sets: "3×10-12",
+      muscle: "Triceps",
+      rest: 75,
+      desc: "Culcat, bara sau ganterele deasupra fetei. Indoaie doar din coate coborand spre frunte, apoi extinde. Coatele nemiscate."
     }, {
       name: "Incline Curls",
       sets: "3×10-12",
       muscle: "Biceps",
-      rest: 75,
-      desc: "Sit on incline bench (~45°). Arms hang straight down. Curl up — the incline pre-stretches the bicep for greater activation."
+      rest: 60,
+      desc: "Banca la ~45 grade, bratele atarna liber. Inclinarea pre-intinde bicepsul pentru activare maxima."
+    }]
+  },
+  5: {
+    day: "Friday",
+    type: "LOWER",
+    color: "#a855f7",
+    icon: "🟣",
+    exercises: [{
+      name: "Bulgarian Split Squat",
+      sets: "3×10-12 /picior",
+      muscle: "Quads/Glutes",
+      rest: 120,
+      desc: "⭐ UNILATERAL. Piciorul din spate pe banca DOAR pentru echilibru — nu impinge cu el. Tors drept pentru accent cvadriceps. Incepe cu piciorul mai slab si fa acelasi numar de reps si cu celalalt. Zero compresie pe coloana."
     }, {
-      name: "Concentration Curls",
-      sets: "3×12",
-      muscle: "Biceps",
+      name: "Leg Press",
+      sets: "3×12-15",
+      muscle: "Quads",
+      rest: 120,
+      desc: "Repetari mai multe decat miercuri, greutate mai mica. Zi de volum, nu de forta maximala."
+    }, {
+      name: "Leg Curls",
+      sets: "3×12-15",
+      muscle: "Hamstrings",
+      rest: 90,
+      desc: "A doua sedinta de ischiogambieri a saptamanii. Tempo lent pe negativ, 3 secunde la coborare."
+    }, {
+      name: "Leg Extension",
+      sets: "3×15",
+      muscle: "Quads",
       rest: 75,
-      desc: "Sit, elbow braced against inner thigh. Curl dumbbell with full focus on the squeeze. Best isolation exercise for bicep peak."
+      desc: "Finisher cvadriceps. Repetari mari, pauza 1s sus pe fiecare repetare."
+    }, {
+      name: "Hip Thrust",
+      sets: "3×12",
+      muscle: "Glutes",
+      rest: 90,
+      desc: "Spatele sus pe banca, bara pe solduri cu burete. Impinge din calcaie pana corpul e paralel cu podeaua, strange fesele 1s sus. Fesieri fara hinge si fara incarcare pe coloana."
+    }, {
+      name: "Calf Raises",
+      sets: "4×18-20",
+      muscle: "Calves",
+      rest: 60,
+      desc: "A doua sedinta de gambe. Repetari mai multe decat miercuri. Amplitudine completa, pauza jos in intindere."
     }, {
       name: "Russian Twists",
       sets: "3×20",
       muscle: "Core",
-      rest: 60,
+      rest: 45,
       finisher: true,
-      desc: "🎯 CORE FINISHER (5-6 min). Asezat, picioarele ridicate, disc/gantera in maini. Roteste trunchiul stanga-dreapta controlat, atinge podeaua langa sold. Lucreaza flancurile (obliquii) — zona ta android."
+      desc: "🎯 CORE FINISHER. Asezat, picioarele ridicate, disc in maini. Roteste trunchiul controlat, atinge podeaua langa sold. Flancuri — zona ta android."
     }]
   },
   6: {
@@ -772,12 +759,31 @@ const BONUS_Q = [{
   desc: "Core anti-extensie - post Pull day. Lombarul lipit de podea, corpul in forma de banana. Progresie: tuck (genunchi la piept) → un picior intins → ambele picioare → full (brate+picioare intinse). Daca lombarul se ridica, indoi picioarele. 3×30s."
 }, {
   id: "pushups",
-  label: "100 Push-ups",
+  label: "Push-ups la refuz (3 seturi)",
   stat: "STR",
   xp: 30,
+  chestBonus: true,
   icon: "💪",
   days: [2],
-  desc: "Tuesday - chest is rested"
+  desc: "🧡 BONUS PIEPT. 3 seturi la refuz, pauza 90s intre ele. Pieptul e odihnit dupa Push-ul de luni. Corp drept ca o scandura, coboara pana la 2cm de podea."
+}, {
+  id: "inclinepush",
+  label: "Incline Push-ups (3x15)",
+  stat: "STR",
+  xp: 25,
+  icon: "🧡",
+  days: [3],
+  chestBonus: true,
+  desc: "🧡 BONUS PIEPT. Mainile pe canapea sau pe masa, corpul inclinat. Accent pe pieptul inferior. Usor — nu incarca recuperarea inaintea zilei de Upper."
+}, {
+  id: "diamondpush",
+  label: "Diamond Push-ups (3 seturi)",
+  stat: "STR",
+  xp: 25,
+  icon: "💎",
+  days: [5],
+  chestBonus: true,
+  desc: "🧡 BONUS PIEPT + TRICEPS. Mainile apropiate, degetele mari si aratatoarele formeaza un romb. Coatele lipite de corp. Piept interior si triceps."
 }, {
   id: "squats",
   label: "100 Bodyweight Squats",
@@ -810,14 +816,7 @@ const BONUS_Q = [{
   icon: "🔥",
   days: [6, 0],
   desc: "Weekend core finisher"
-}, {
-  id: "coldshower",
-  label: "Cold Shower (5 min)",
-  stat: "VIT",
-  xp: 20,
-  icon: "🧊"
-}, {
-  id: "kettlebell",
+}, {  id: "kettlebell",
   label: "Kettlebell Pavel",
   stat: "VIT",
   xp: 35,
@@ -839,7 +838,28 @@ const BONUS_Q = [{
   stat: "AGI",
   xp: 15,
   icon: "🤸",
-  desc: "5 minute seara, acasa, fara echipament: hip opener 90/90, rotatii toracice, ankle rocks, cat-cow. Singura sursa de AGI — la squat 110kg mobilitatea soldului devine factor limitant."
+  desc: "Singura sursa de AGI. Seara, pe covor, fara echipament.",
+  steps: [{
+    n: "1",
+    name: "90/90 Hip Switch",
+    time: "90 secunde",
+    how: "Asezat pe podea, ambii genunchi indoiti la 90 grade — unul in fata, unul lateral. Roteste lent soldurile in partea cealalta, fara sa ridici fundul de pe podea. Inainte si inapoi, lent."
+  }, {
+    n: "2",
+    name: "Rotatii toracice",
+    time: "60 secunde",
+    how: "In patrupedie, o mana la ceafa. Roteste cotul in sus spre tavan cat poti, urmareste-l cu privirea. Coboara controlat sub piept. 8 repetari pe fiecare parte."
+  }, {
+    n: "3",
+    name: "Ankle Rocks",
+    time: "60 secunde",
+    how: "In fandare, genunchiul din fata impins peste varful piciorului, calcaiul LIPIT de podea. Balanseaza inainte si inapoi. 10 pe fiecare picior. Direct util la squat."
+  }, {
+    n: "4",
+    name: "Cat-Cow",
+    time: "60 secunde",
+    how: "In patrupedie. Inspira si lasa burta jos arcuind spatele, expira si rotunjeste coloana impingand spre tavan. Lent, 10 cicluri."
+  }]
 }];
 
 // Plank progression - built-in 4 levels. Cresti NIVELUL, nu timpul peste 60s.
@@ -1061,7 +1081,7 @@ const MUSCLE_GROUPS = [{
   key: "quads",
   name: "Quads",
   icon: "🦵",
-  exercises: ["Squats", "Leg Press", "Walking Lunges", "Leg Extension"]
+  exercises: ["Squats", "Leg Press", "Walking Lunges", "Leg Extension", "Bulgarian Split Squat"]
 }, {
   key: "hamstrings",
   name: "Hamstrings",
@@ -1071,7 +1091,7 @@ const MUSCLE_GROUPS = [{
   key: "glutes",
   name: "Glutes",
   icon: "🍑",
-  exercises: ["Squats", "Walking Lunges"]
+  exercises: ["Squats", "Walking Lunges", "Bulgarian Split Squat", "Hip Thrust"]
 }, {
   key: "calves",
   name: "Calves",
@@ -2852,6 +2872,7 @@ function SleepLogger({
   const [hours, setHours] = useState("");
   const [mins, setMins] = useState("");
   const [rating, setRating] = useState(0);
+  const [readiness, setReadiness] = useState("");
   return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
@@ -2927,16 +2948,52 @@ function SleepLogger({
       cursor: "pointer",
       fontFamily: "inherit"
     }
-  }, "\u2605")))), /*#__PURE__*/React.createElement("button", {
+  }, "\u2605")))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 6,
+      marginBottom: 6,
+      alignItems: "center"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 9,
+      color: "#64748b",
+      letterSpacing: 1,
+      flexShrink: 0
+    }
+  }, "READINESS"), /*#__PURE__*/React.createElement("input", {
+    type: "number",
+    inputMode: "numeric",
+    min: "0",
+    max: "100",
+    value: readiness,
+    placeholder: "Oura 0-100 (optional)",
+    onChange: e => setReadiness(e.target.value.replace(/[^0-9]/g, "").slice(0, 3)),
+    style: {
+      flex: 1,
+      padding: "7px 8px",
+      background: "rgba(0,0,0,.3)",
+      border: "1px solid rgba(99,102,241,.3)",
+      borderRadius: 5,
+      color: "#e2e8f0",
+      fontSize: 12,
+      fontFamily: "'Courier New',monospace",
+      outline: "none",
+      boxSizing: "border-box",
+      textAlign: "center"
+    }
+  })), /*#__PURE__*/React.createElement("button", {
     onClick: () => {
       if (!hours && !mins || rating === 0) {
         alert("Introdu ore + minute si rating");
         return;
       }
-      logSleep(hmToDec(hours, mins), rating);
+      logSleep(hmToDec(hours, mins), rating, readiness);
       setHours("");
       setMins("");
       setRating(0);
+      setReadiness("");
     },
     style: {
       width: "100%",
@@ -3342,7 +3399,6 @@ function App() {
       treadmill: ["cardio"],
       plank: ["core"],
       extrarun: ["cardio"],
-      coldshower: [],
       nosugar: [],
       farmercarry: ["core"],
       kettlebell: ["core"],
@@ -3351,7 +3407,9 @@ function App() {
       calfblitz: ["calves"],
       extrardl: ["quads"],
       protein: [],
-      mobility: []
+      mobility: [],
+      inclinepush: ["chest", "triceps"],
+      diamondpush: ["chest", "triceps"]
     };
     if (done.includes(id)) {
       const newMxp = {
@@ -3597,10 +3655,10 @@ function App() {
   // Machines (cable, smith, leg press, etc): din 2.5 in 2.5 (sau 5 daca placi mari)
   const getKgIncrement = exName => {
     // DB / Dumbbell exercises - increment 2kg
-    const dbExercises = ["DB Bench Press", "DB Incline Bench Press", "Incline DB Press", "Arnold Press", "Single Arm DB Row", "Chest-Supported Row", "Lateral Raises", "Front Raises", "Hammer Curls", "Incline Curls", "Concentration Curls", "Reverse Flyes"];
+    const dbExercises = ["DB Bench Press", "DB Incline Bench Press", "Incline DB Press", "Arnold Press", "Single Arm DB Row", "Lateral Raises", "Front Raises", "Hammer Curls", "Incline Curls", "Concentration Curls", "Reverse Flyes", "Bulgarian Split Squat"];
     // Light isolation barbell/EZ - increment 2.5kg
     // Compound barbell - increment 2.5-5kg
-    const heavyCompound = ["Bench Press", "Squats", "Overhead Press", "Pull-ups / Lat Pulldown", "Leg Press"];
+    const heavyCompound = ["Bench Press", "Squats", "Overhead Press", "Pull-ups / Lat Pulldown", "Leg Press", "Hip Thrust"];
     if (dbExercises.includes(exName)) return 2;
     if (heavyCompound.includes(exName)) return 2.5;
     return 2.5; // default: cables, isolation, etc
@@ -3782,18 +3840,21 @@ function App() {
   };
 
   // Sleep tracker
-  const logSleep = (hours, rating) => {
+  const logSleep = (hours, rating, readiness) => {
     const todayKey = new Date().toISOString().slice(0, 10);
     const existing = (g.current.sleepLog || []).filter(s => s.date !== todayKey);
-    const newLog = [...existing, {
+    const entry = {
       date: todayKey,
       hours: parseFloat(hours),
       rating: parseInt(rating)
-    }].sort((a, b) => a.date.localeCompare(b.date)).slice(-90);
+    };
+    const rd = parseInt(readiness);
+    if (!isNaN(rd) && rd > 0) entry.readiness = Math.min(100, rd);
+    const newLog = [...existing, entry].sort((a, b) => a.date.localeCompare(b.date)).slice(-90);
     update({
       sleepLog: newLog
     });
-    setNotif(`😴 Somn logat: ${fmtSleep(hours)} · ${rating}/5`);
+    setNotif(`😴 Somn logat: ${fmtSleep(hours)} · ${rating}/5${readiness ? ` · R${readiness}` : ""}`);
   };
 
   // Exercise swap
@@ -4934,6 +4995,8 @@ function App() {
       const isPlank = q.progression && q.id === "weightedplank";
       const isKb = q.kbProgression && q.id === "kettlebell";
       const hasProg = isPlank || isKb;
+      const hasSteps = Array.isArray(q.steps) && q.steps.length > 0;
+      const hasPanel = hasProg || hasSteps;
       const LVLS = isKb ? KB_LEVELS : PLANK_LEVELS;
       const lvlKey = isKb ? "kbLevel" : "plankLevel";
       const pLvl = (isKb ? g.current.kbLevel : g.current.plankLevel) || 1;
@@ -4948,10 +5011,10 @@ function App() {
           gap: 10,
           width: "100%",
           padding: "10px 12px",
-          marginBottom: hasProg ? 0 : 4,
+          marginBottom: hasPanel ? 0 : 4,
           background: done.includes(q.id) ? "rgba(59,130,246,.08)" : "rgba(255,255,255,.02)",
           border: done.includes(q.id) ? "1px solid rgba(59,130,246,.3)" : "1px solid rgba(255,255,255,.06)",
-          borderRadius: hasProg ? "7px 7px 0 0" : 7,
+          borderRadius: hasPanel ? "7px 7px 0 0" : 7,
           cursor: "pointer",
           textAlign: "left",
           color: "inherit",
@@ -5056,7 +5119,45 @@ function App() {
           fontFamily: "inherit",
           flexShrink: 0
         }
-      }, "◂")));
+      }, "◂")), hasSteps && /*#__PURE__*/React.createElement("div", {
+        style: {
+          padding: "10px 12px",
+          marginBottom: 4,
+          background: "rgba(168,85,247,.05)",
+          border: "1px solid rgba(168,85,247,.2)",
+          borderTop: "none",
+          borderRadius: "0 0 7px 7px"
+        }
+      }, q.steps.map(st => /*#__PURE__*/React.createElement("div", {
+        key: st.n,
+        style: {
+          marginBottom: 9
+        }
+      }, /*#__PURE__*/React.createElement("div", {
+        style: {
+          display: "flex",
+          alignItems: "baseline",
+          gap: 6,
+          marginBottom: 3
+        }
+      }, /*#__PURE__*/React.createElement("span", {
+        style: {
+          fontSize: 12,
+          fontWeight: 700,
+          color: "#c4b5fd"
+        }
+      }, st.n, ". ", st.name), /*#__PURE__*/React.createElement("span", {
+        style: {
+          fontSize: 9,
+          color: "#7c3aed"
+        }
+      }, st.time)), /*#__PURE__*/React.createElement("div", {
+        style: {
+          fontSize: 11,
+          lineHeight: 1.5,
+          color: "#94a3b8"
+        }
+      }, st.how)))));
     });
   })(), WEEKLY_OBJ.length > 0 && /*#__PURE__*/React.createElement("div", {
     style: {
@@ -5661,9 +5762,9 @@ function App() {
         }, (() => {
           if (ex.repsOnly) return `🤸 Bodyweight · progresezi prin REPS · fara greutate`;
           const inc = getKgIncrement(ex.name);
-          const dbExercises = ["DB Bench Press", "DB Incline Bench Press", "Incline DB Press", "Arnold Press", "Single Arm DB Row", "Chest-Supported Row", "Lateral Raises", "Front Raises", "Hammer Curls", "Incline Curls", "Concentration Curls", "Reverse Flyes"];
+          const dbExercises = ["DB Bench Press", "DB Incline Bench Press", "Incline DB Press", "Arnold Press", "Single Arm DB Row", "Lateral Raises", "Front Raises", "Hammer Curls", "Incline Curls", "Concentration Curls", "Reverse Flyes", "Bulgarian Split Squat"];
           const isDB = dbExercises.includes(ex.name);
-          const isMachine = ["Leg Press", "Seated Cable Row", "Cable Flyes", "Tricep Pushdowns", "Cable Pullover", "Face Pulls", "Pull-ups / Lat Pulldown", "Leg Curls", "Leg Extension"].includes(ex.name);
+          const isMachine = ["Leg Press", "Seated Cable Row", "Cable Flyes", "Tricep Pushdowns", "Cable Pullover", "Face Pulls", "Pull-ups / Lat Pulldown", "Leg Curls", "Leg Extension", "Chest-Supported Row", "Hip Thrust"].includes(ex.name);
           if (isDB) return `🏋️ DB · log greutate/mana · increment ${inc}kg`;
           if (isMachine) return `⚙️ Masina · log doar placile · increment ${inc}kg`;
           return `🏋️‍♂️ Barbell · log total cu bara 20kg · increment ${inc}kg`;
@@ -6870,7 +6971,7 @@ function App() {
       }
     }, avgR, "/5"))));
   })(), (() => {
-    const topLifts = ["Bench Press", "Squats", "Overhead Press", "Pull-ups / Lat Pulldown", "Leg Press", "Chest-Supported Row"];
+    const topLifts = ["Bench Press", "Squats", "DB Bench Press", "Overhead Press", "Leg Press", "Chest-Supported Row"];
     const lifts = topLifts.filter(n => liftLog[n] && liftLog[n].length >= 2);
     if (lifts.length === 0) return null;
     return /*#__PURE__*/React.createElement("div", {
