@@ -14,85 +14,58 @@
 
 ---
 
-# CHANGELOG — Update 12 Septembrie 2026
+# CHANGELOG — Update 1 Octombrie 2026
 
-## 1. PROGRAM NOU: PPL + Upper/Lower
+Sapte modificari intr-un singur deploy.
 
-**Luni PUSH · Marti PULL · Miercuri LEGS · Joi UPPER · Vineri LOWER**
+## Exercitii bodyweight — progresie doar prin repetari
 
-Doua schimbari structurale:
-- **Picioarele trec de la o zi la doua.** Miercuri = zi grea (Squat 4x6-8). Vineri = zi de volum, unilaterala, fara incarcare axiala.
-- **Pieptul primeste a doua zi.** Luni (Bench + DB Incline + Cable Flyes) si Joi (DB Bench + Cable Flyes).
+Trei exercitii nu mai au camp de kg. Vezi doar numarul si repetarile, iar sub titlu scrie `Bodyweight · progresezi prin REPS · fara greutate`. Recomandarea e intotdeauna +1 repetare, niciodata o greutate mai mare.
 
-### Volum saptamanal rezultat (serii)
-
-| Grupa | Serii | Observatie |
+| | Inainte | Acum |
 |---|---|---|
-| Cvadriceps | 22 | de la ~10 |
-| **Piept** | **18** | **de la ~14** |
-| Spate | 17 | usor redus, e grupa cea mai dezvoltata |
-| Umeri | 15 | |
-| Fesieri | 13 | |
-| Core | 12 | finisher in fiecare zi |
-| Biceps | 9 | |
-| Gambe | 8 | doua zile in loc de una |
-| Triceps | 6 | + Diamond Push-ups ca bonus |
-| Ischiogambieri | 6 | Leg Curls pe ambele zile de picioare |
+| Spate, marti | Lat Pulldown 4×8-10 | **Pull-ups 4×5-8**, pauza 150s |
+| Abdomen | Hanging Leg Raises 3×15 | **3×12-20**, fara gantera |
+| Core | Weighted Plank 3×45-60s | **Plank 3×45-90s**, fara disc |
 
-**Zero hinge de sold in tot programul** — fara RDL, fara Good Mornings, fara Barbell Rows in picioare.
+**Pull-ups inlocuieste complet Lat Pulldown** ca prim exercitiu de spate. Alternative daca nu ies cele cinci: Assisted, Negative (doar coborarea, 5 secunde), Lat Pulldown.
 
-### Exercitii noi
-- **Bulgarian Split Squat** (Vineri) — unilateral, se logheaza ca DB, increment 2kg
-- **Hip Thrust** (Vineri) — fesieri fara hinge, se logheaza ca aparat (doar placile)
+Istoricul de Lat Pulldown ramane separat — 115kg pe aparat nu se compara cu tractiuni neasistate. Cele doua istorice de Plank (unul sub "Weighted Plank", altul sub "Plank") au fost fuzionate cronologic, cu greutatile puse la zero. La fel si cele 17.5kg de la Hanging Leg Raises.
 
-### Nota pe Bench si DB Bench
-Ambele au acum in descriere: fara spotter, plafonul de siguranta e 100kg. Peste asta, progresezi din repetari.
+## Barbell Curls → Cable Curls
 
-## 2. Chest-Supported Row reconfigurat ca APARAT
+Marti, exercitiul 5. Descriere noua care explica de ce greutatea mai mica **nu e regresie**: la scripete tensiunea e constanta pe toata amplitudinea, inclusiv in varf unde la haltera se pierde.
 
-Era setat ca gantere (greutatea unei gantere, increment 2kg). Acum e aparat: **se logheaza doar placile**, increment 5kg. Recomandarile vor fi corecte de acum inainte.
+Istoricul de Barbell Curls ramane separat — altfel aplicatia ti-ar recomanda 45kg la cablu.
 
-## 3. Bonus de piept raspandit in saptamana
+## Boss fights — scoase
 
-Ca la core, dar pe piept — apar in zilele fara Push:
+Tab-ul BOSS a disparut din bara de jos. Ai acum sase tab-uri in loc de sapte: QUESTS, PPL, STATS, BODY, RANK, SAVE.
 
-| Zi | Quest | XP |
-|---|---|---|
-| Marti | Push-ups la refuz (3 seturi) | 30 |
-| Miercuri | Incline Push-ups (3x15) | 25 |
-| Vineri | Diamond Push-ups (3 seturi) | 25 |
+Daca aveai un boss activ, se inchide automat si trece in istoric ca abandonat, fara penalizare. Victoriile din trecut raman salvate in date.
 
-Toate adauga XP pe chest (si triceps), acasa, fara sa incarce recuperarea.
+## Cardio 30 min — scos din quest-urile zilnice
 
-## 4. Mobility — instructiuni pas cu pas
+Quest-urile zilnice au ramas cinci, toate pe proteina. Daca il aveai bifat azi, se debifeaza la prima deschidere ca sa nu ramana blocat.
 
-Quest-ul avea o singura linie de text la 8px, imposibil de urmarit. Acum, cand apare in BONUS, se deschide sub el **un panou cu cei 4 pasi la text lizibil (11-12px)**:
+Nota: cardio-ul pe banda la birou nu era cauza pierderii de masa slaba — XP-ul de cardio era blocat la 144 de dinainte de 24 septembrie, iar scaderea a venit din cele zece zile fara antrenamente de forta. Il scoatem pentru simplitate, nu pentru interferenta. Se reintroduce cand vrei.
 
-1. **90/90 Hip Switch** — 90 secunde
-2. **Rotatii toracice** — 60 secunde
-3. **Ankle Rocks** — 60 secunde
-4. **Cat-Cow** — 60 secunde
+## Kettlebell Pavel — scos din bonus quests
 
-Fiecare cu explicatie completa de executie. E disponibil in fiecare zi si e singura sursa de AGI (blocat la 16 de luni de zile).
+Sambata au ramas: 100 Sit-ups, Inot, Mobility.
 
-## 5. READINESS se poate loga
-
-Camp nou in logger-ul de somn, sub ore/minute si stelute: **READINESS 0-100**, optional. Valoarea din Oura. Apare si in notificare (`R74`).
-
-## 6. Cold Shower scos
-
-Eliminat din quest-urile bonus.
+Nivelurile de kettlebell raman salvate in date, deci cand il reintroduci nu pornesti de la zero. Textul de deblocare AGI nu mai trimite la kettlebell — invata Turkish Get-Up cu o gantera usoara.
 
 ---
 
 ## Verificare dupa deploy
 
-1. **Tab PPL**: Joi scrie UPPER (portocaliu), Vineri scrie LOWER (violet)
-2. **Vineri**: primul exercitiu e Bulgarian Split Squat, al cincilea e Hip Thrust
-3. **Marti**: apare bonusul "Push-ups la refuz"
-4. **Orice zi**: quest-ul Mobility are sub el panoul violet cu cei 4 pasi
-5. **Logger somn**: exista randul READINESS
-6. **Bonus**: Cold Shower nu mai apare nicaieri
-7. **Chest-Supported Row**: recomandarea trebuie sa fie in placi, nu in kg de gantera
+1. **Bara de jos**: sase tab-uri, fara BOSS
+2. **Quest-uri zilnice**: cinci, toate proteina, fara cardio
+3. **Sambata**: fara Kettlebell Pavel
+4. **Marti**: primul exercitiu e Pull-ups (4×5-8), al cincilea e Cable Curls
+5. Deschide **Pull-ups**: nu exista coloana kg, doar `#` si `reps`
+6. **Miercuri**, ultimul exercitiu se numeste Plank, nu Weighted Plank
+7. Istoricul de Plank arata toate sesiunile din iulie incoace intr-un singur loc
 
-Testat inainte de livrare intr-un browser simulat cu datele tale: zero erori de randare.
+Testat inainte de livrare intr-un browser simulat cu datele tale: zero erori de randare, ambele migrari verificate.

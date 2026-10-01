@@ -43,7 +43,7 @@ async function loadFromIDB() {
     return null;
   }
 }
-const SAVE_FIELDS = ["level", "xp", "stats", "done", "doneEx", "doneW", "doneLessons", "totalXp", "qC", "streak", "wLog", "socialLog", "weightLog", "bookTitle", "bookPages", "bookRead", "bookLog", "muscleXp", "lastDailyReset", "lastWeeklyReset", "penaltyLog", "dailyLessonDone", "liftLog", "vacation", "activeBoss", "bossHistory", "sleepLog", "workoutCalendar", "exerciseSwaps", "plankLevel", "kbLevel", "agiUnlocked", "sleepFmtV2"];
+const SAVE_FIELDS = ["level", "xp", "stats", "done", "doneEx", "doneW", "doneLessons", "totalXp", "qC", "streak", "wLog", "socialLog", "weightLog", "bookTitle", "bookPages", "bookRead", "bookLog", "muscleXp", "lastDailyReset", "lastWeeklyReset", "penaltyLog", "dailyLessonDone", "liftLog", "vacation", "activeBoss", "bossHistory", "sleepLog", "workoutCalendar", "exerciseSwaps", "plankLevel", "kbLevel", "agiUnlocked", "sleepFmtV2", "plankBwV1", "cleanupV4"];
 const DEFAULT_STATE = {
   level: 1,
   xp: 0,
@@ -100,7 +100,9 @@ const DEFAULT_STATE = {
   plankLevel: 1,
   kbLevel: 1,
   agiUnlocked: false,
-  sleepFmtV2: false
+  sleepFmtV2: false,
+  plankBwV1: false,
+  cleanupV4: false
 };
 
 // ─── SOMN: ore + minute (HH:MM) ───
@@ -213,11 +215,12 @@ const PPL = {
     color: "#3b82f6",
     icon: "🔵",
     exercises: [{
-      name: "Pull-ups / Lat Pulldown",
-      sets: "4×8-10",
+      name: "Pull-ups",
+      sets: "4×5-8",
       muscle: "Lats",
-      rest: 120,
-      desc: "Priza mai lata decat umerii. Trage bara pana la piept, strange dorsalii jos, revenire controlata. Fara balans din corp."
+      rest: 150,
+      repsOnly: true,
+      desc: "⭐ EXERCITIUL PRINCIPAL DE SPATE. Neasistat, cu greutatea corpului. Priza mai lata decat umerii, atarnare completa jos (brate intinse), trage pana barbia trece de bara, coborare controlata 2-3 secunde. Fara balans, fara kipping. PROGRESIE DOAR PRIN REPETARI — nu adaugi greutate. Cand faci 4×8 curat, urmatorul pas e sa cresti la 4×10, apoi se discuta greutatea adaugata."
     }, {
       name: "Chest-Supported Row",
       sets: "4×10-12",
@@ -237,11 +240,11 @@ const PPL = {
       rest: 45,
       desc: "Cablu la nivelul fetei cu coarda. Trage spre frunte desfacand coarda, rotatie externa la final. Sanatatea umarului."
     }, {
-      name: "Barbell Curls",
+      name: "Cable Curls",
       sets: "3×10-12",
       muscle: "Biceps",
       rest: 75,
-      desc: "ASEZAT sau la pupitru (nu in picioare — scoate mijlocul din ecuatie si elimina balansul). Coatele fixe, strange sus, coboara lent."
+      desc: "La scripete, cu bara dreapta sau EZ. Coatele lipite de corp, fara balans din sold. Tensiune constanta pe toata amplitudinea — de aceea greutatea e mai mica decat la haltera si NU e regresie. Controleaza coborarea 2s, strange sus 1s."
     }, {
       name: "Hammer Curls",
       sets: "3×10-12",
@@ -250,11 +253,12 @@ const PPL = {
       desc: "Priza neutra, palmele fata in fata. Lucreaza si brahialul si antebratul. Asezat pentru control maxim."
     }, {
       name: "Hanging Leg Raises",
-      sets: "3×15",
+      sets: "3×12-20",
       muscle: "Core",
       rest: 60,
       finisher: true,
-      desc: "🎯 CORE FINISHER. Atarnat de bara, ridica picioarele controlat la 90 grade. Fara balans. Abdomen inferior — exact zona ta problematica."
+      repsOnly: true,
+      desc: "🎯 CORE FINISHER. Atarnat de bara, doar greutatea corpului. Ridica picioarele controlat pana la 90 grade, coboara lent fara sa te balansezi. PROGRESIE DOAR PRIN REPETARI — fara gantera intre picioare. Abdomen inferior, exact zona ta problematica."
     }]
   },
   3: {
@@ -299,13 +303,14 @@ const PPL = {
       rest: 60,
       desc: "In picioare pe treapta, gantera intr-o mana. Calcaiul coboara sub nivelul treptei pentru intindere completa, ridicare maxima pe varfuri, pauza 1s sus."
     }, {
-      name: "Weighted Plank",
-      sets: "3×45-60s",
+      name: "Plank",
+      sets: "3×45-90s",
       muscle: "Core",
       rest: 60,
       finisher: true,
       hold: true,
-      desc: "🎯 CORE FINISHER. Plank pe antebrate, disc pe spate. Corp drept, fund jos, abdomen contractat."
+      repsOnly: true,
+      desc: "🎯 CORE FINISHER. Plank pe antebrate, doar greutatea corpului — fara disc pe spate. Corp in linie dreapta de la calcaie la cap, fund jos, abdomen si fesieri contractati. PROGRESIE DOAR PRIN SECUNDE: se logheaza durata in campul de repetari. Cand tii 3×90s curat, treci la variante mai grele (plank cu un brat ridicat)."
     }]
   },
   4: {
@@ -643,12 +648,6 @@ const NO_GYM = {
   }
 };
 const DAILY_Q = [{
-  id: "treadmill",
-  label: "30 Min Cardio (Zone 2)",
-  stat: "VIT",
-  xp: 30,
-  icon: "🏃"
-}, {
   id: "protein_shake1",
   label: "Shake Whey #1 (2 scoops · 45g)",
   stat: "VIT",
@@ -816,14 +815,6 @@ const BONUS_Q = [{
   icon: "🔥",
   days: [6, 0],
   desc: "Weekend core finisher"
-}, {  id: "kettlebell",
-  label: "Kettlebell Pavel",
-  stat: "VIT",
-  xp: 35,
-  icon: "🔔",
-  days: [6],
-  kbProgression: true,
-  desc: "Stil Pavel: daca poti 10 reps, fa 5. NU la epuizare. 20-25 min."
 }, {
   id: "swimsauna",
   label: "Inot",
@@ -1061,7 +1052,7 @@ const MUSCLE_GROUPS = [{
   key: "back",
   name: "Back",
   icon: "🔙",
-  exercises: ["Pull-ups / Lat Pulldown", "Chest-Supported Row", "Seated Cable Row", "Single Arm DB Row", "Cable Pullover"]
+  exercises: ["Pull-ups", "Pull-ups / Lat Pulldown", "Chest-Supported Row", "Seated Cable Row", "Single Arm DB Row", "Cable Pullover"]
 }, {
   key: "shoulders",
   name: "Shoulders",
@@ -1071,7 +1062,7 @@ const MUSCLE_GROUPS = [{
   key: "biceps",
   name: "Biceps",
   icon: "💪",
-  exercises: ["Barbell Curls", "Hammer Curls", "Incline Curls", "Concentration Curls"]
+  exercises: ["Cable Curls", "Barbell Curls", "Hammer Curls", "Incline Curls", "Concentration Curls"]
 }, {
   key: "triceps",
   name: "Triceps",
@@ -1101,7 +1092,7 @@ const MUSCLE_GROUPS = [{
   key: "core",
   name: "Core",
   icon: "🔥",
-  exercises: ["Cable Crunches", "Decline Sit-ups", "Hanging Leg Raises", "Hollow Hold", "Hollow Body Hold", "Plank", "Weighted Plank", "Russian Twists", "Ab Wheel / Plank", "Turkish Get-Up / Windmill", "Windmill / Turkish Get-Up", "Pallof Press cu banda", "Side Plank", "Leg Raises", "Bicycle Crunches"]
+  exercises: ["Cable Crunches", "Decline Sit-ups", "Hanging Leg Raises", "Hollow Hold", "Hollow Body Hold", "Plank", "Russian Twists", "Ab Wheel / Plank", "Turkish Get-Up / Windmill", "Windmill / Turkish Get-Up", "Pallof Press cu banda", "Side Plank", "Leg Raises", "Bicycle Crunches"]
 }, {
   key: "cardio",
   name: "Cardio",
@@ -1209,6 +1200,16 @@ const EXERCISE_ALTERNATIVES = {
   }, {
     name: "Overhead Tricep Ext.",
     reason: "Long head focus"
+  }],
+  "Pull-ups": [{
+    name: "Assisted Pull-ups",
+    reason: "Daca nu iesi 5 reps curate"
+  }, {
+    name: "Negative Pull-ups",
+    reason: "Doar faza de coborare, 5s"
+  }, {
+    name: "Lat Pulldown",
+    reason: "Daca bara e ocupata"
   }],
   "Pull-ups / Lat Pulldown": [{
     name: "Assisted Pull-ups",
@@ -1812,7 +1813,7 @@ const BOSS_LIBRARY = [{
     icon: "🐉"
   }, {
     id: "bq_pullup_focus",
-    label: "Pull-ups / Lat Pulldown — control total",
+    label: "Pull-ups — control total, coborare 3s",
     stat: "STR",
     muscle: "back",
     xp: 15,
@@ -3180,6 +3181,70 @@ function App() {
             } catch (e) {}
             await saveToIDB(g.current);
           }
+
+          // ─── MIGRARE v3: Plank bodyweight (fuziune Weighted Plank -> Plank) ───
+          let _plankDone = false;
+          try {
+            _plankDone = localStorage.getItem("slv_plankBwV1") === "1";
+          } catch (e) {}
+          if (!g.current.plankBwV1 && !_plankDone) {
+            const ll2 = {
+              ...(g.current.liftLog || {})
+            };
+            const wp = ll2["Weighted Plank"] || [];
+            const pl = ll2["Plank"] || [];
+            if (wp.length || pl.length) {
+              ll2["Plank"] = [...pl, ...wp].map(e => ({
+                date: e.date,
+                sets: (e.sets || []).map(x => ({
+                  kg: 0,
+                  reps: parseInt(x.reps) || 0,
+                  failed: !!x.failed
+                }))
+              })).sort((a, b) => String(a.date).localeCompare(String(b.date)));
+            }
+            delete ll2["Weighted Plank"];
+            // Hanging Leg Raises: scot greutatea adaugata din istoric
+            if (ll2["Hanging Leg Raises"]) {
+              ll2["Hanging Leg Raises"] = ll2["Hanging Leg Raises"].map(e => ({
+                date: e.date,
+                sets: (e.sets || []).map(x => ({
+                  kg: 0,
+                  reps: parseInt(x.reps) || 0,
+                  failed: !!x.failed
+                }))
+              }));
+            }
+            g.current.liftLog = ll2;
+            g.current.plankBwV1 = true;
+            try {
+              localStorage.setItem("slv_plankBwV1", "1");
+            } catch (e) {}
+            await saveToIDB(g.current);
+          }
+
+          // ─── MIGRARE v4: boss dezactivat, cardio + kettlebell scoase ───
+          let _v4Done = false;
+          try {
+            _v4Done = localStorage.getItem("slv_cleanupV4") === "1";
+          } catch (e) {}
+          if (!g.current.cleanupV4 && !_v4Done) {
+            if (g.current.activeBoss) {
+              g.current.bossHistory = [...(g.current.bossHistory || []), {
+                ...g.current.activeBoss,
+                result: "abandoned",
+                completedDate: new Date().toISOString().slice(0, 10)
+              }];
+              g.current.activeBoss = null;
+            }
+            const _gone = ["treadmill", "kettlebell"];
+            g.current.done = (g.current.done || []).filter(x => _gone.indexOf(x) === -1);
+            g.current.cleanupV4 = true;
+            try {
+              localStorage.setItem("slv_cleanupV4", "1");
+            } catch (e) {}
+            await saveToIDB(g.current);
+          }
         }
 
       // ─── AUTO DAILY RESET + PENALTY (runs after load) ───
@@ -3658,7 +3723,7 @@ function App() {
     const dbExercises = ["DB Bench Press", "DB Incline Bench Press", "Incline DB Press", "Arnold Press", "Single Arm DB Row", "Lateral Raises", "Front Raises", "Hammer Curls", "Incline Curls", "Concentration Curls", "Reverse Flyes", "Bulgarian Split Squat"];
     // Light isolation barbell/EZ - increment 2.5kg
     // Compound barbell - increment 2.5-5kg
-    const heavyCompound = ["Bench Press", "Squats", "Overhead Press", "Pull-ups / Lat Pulldown", "Leg Press", "Hip Thrust"];
+    const heavyCompound = ["Bench Press", "Squats", "Overhead Press", "Leg Press", "Hip Thrust"];
     if (dbExercises.includes(exName)) return 2;
     if (heavyCompound.includes(exName)) return 2.5;
     return 2.5; // default: cables, isolation, etc
@@ -3671,6 +3736,7 @@ function App() {
     const prevReps = parseInt(prev.reps) || 0;
     let maxReps = 12;
     let minReps = 8;
+    let isRepsOnly = false;
     for (const day of Object.values(PPL)) {
       for (const ex of day.exercises || []) {
         if (ex.name === exName) {
@@ -3679,10 +3745,17 @@ function App() {
             minReps = parseInt(m[1]);
             maxReps = parseInt(m[2] || m[1]);
           }
+          if (ex.repsOnly) isRepsOnly = true;
           break;
         }
       }
     }
+    // Bodyweight: progresie exclusiv prin repetari, niciodata prin greutate
+    if (isRepsOnly) return {
+      kg: 0,
+      reps: prevReps + 1,
+      note: "\u2192 +1 rep"
+    };
     const inc = getKgIncrement(exName);
     // Daca a atins max reps cu form bun → creste greutate
     if (prevReps >= maxReps) return {
@@ -3976,10 +4049,6 @@ function App() {
     k: "training",
     i: "🏋️",
     l: "PPL"
-  }, {
-    k: "boss",
-    i: "👹",
-    l: "BOSS"
   }, {
     k: "progress",
     i: "📈",
@@ -5313,7 +5382,7 @@ function App() {
       fontFamily: "'Courier New',monospace",
       textAlign: "left"
     }
-  }, "\uD83C\uDF00 AGI FINISHER (blocat) \u2014 Turkish Get-Up / Windmill pe Marti + Joi. Invata tiparul intai sambata la kettlebell, apoi apasa aici sa deblochezi."), !vacation && g.current.agiUnlocked && /*#__PURE__*/React.createElement("button", {
+  }, "\uD83C\uDF00 AGI FINISHER (blocat) \u2014 Turkish Get-Up / Windmill pe Marti + Joi. Invata tiparul cu o gantera usoara, apoi apasa aici sa deblochezi."), !vacation && g.current.agiUnlocked && /*#__PURE__*/React.createElement("button", {
     onClick: () => {
       if (confirm("Blochezi din nou AGI Finisher?")) {
         update({
@@ -5764,7 +5833,7 @@ function App() {
           const inc = getKgIncrement(ex.name);
           const dbExercises = ["DB Bench Press", "DB Incline Bench Press", "Incline DB Press", "Arnold Press", "Single Arm DB Row", "Lateral Raises", "Front Raises", "Hammer Curls", "Incline Curls", "Concentration Curls", "Reverse Flyes", "Bulgarian Split Squat"];
           const isDB = dbExercises.includes(ex.name);
-          const isMachine = ["Leg Press", "Seated Cable Row", "Cable Flyes", "Tricep Pushdowns", "Cable Pullover", "Face Pulls", "Pull-ups / Lat Pulldown", "Leg Curls", "Leg Extension", "Chest-Supported Row", "Hip Thrust"].includes(ex.name);
+          const isMachine = ["Leg Press", "Seated Cable Row", "Cable Flyes", "Cable Curls", "Tricep Pushdowns", "Cable Pullover", "Face Pulls", "Leg Curls", "Leg Extension", "Chest-Supported Row", "Hip Thrust"].includes(ex.name);
           if (isDB) return `🏋️ DB · log greutate/mana · increment ${inc}kg`;
           if (isMachine) return `⚙️ Masina · log doar placile · increment ${inc}kg`;
           return `🏋️‍♂️ Barbell · log total cu bara 20kg · increment ${inc}kg`;
