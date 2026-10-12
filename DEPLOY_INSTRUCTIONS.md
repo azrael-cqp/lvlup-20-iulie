@@ -1,3 +1,37 @@
+# DEPLOY — update 12 oct 2026 (patch 5)
+
+## Ce s-a schimbat
+
+### 1. PADEL — activitate bonus
+- Apare in sectiunea **BONUS (TODAY)** in fiecare zi, fara zile fixe
+- Il bifezi doar in ziua in care ai jucat
+- **+45 XP, stat AGI** (cel mai mare bonus din app)
+- **Fara penalizare** daca nu joci — bonusurile nu se penalizeaza
+
+### 2. CABLE WOODCHOPPERS — core finisher pe joi
+- Joi UPPER era singura zi fara abdomen; acum are
+- 3×12-15 pe fiecare parte, pauza 45s, muscle "Core", marcat ca finisher
+- Joi are acum 9 exercitii (de la 8)
+
+## Deploy
+1. Deschide repo-ul **azrael-cqp/LevelupV4** pe GitHub
+2. **Drag & drop** `app.compiled.js` peste fisierul existent — NU copy-paste din iOS (smart quotes strica fisierul)
+3. Commit direct pe main
+4. Asteapta 2-3 minute, apoi deschide app-ul in **Safari privat** ca sa ocolesti cache-ul
+
+## Verificare dupa deploy
+- Tab QUESTS → sectiunea BONUS (TODAY) → apare **Padel** cu iconita de minge
+- Tab PPL → selecteaza Thursday → ultimul exercitiu e **Cable Woodchoppers**
+- Streak si XP neatinse (nicio migrare, nimic sters)
+
+## Ce NU s-a schimbat
+- Protein intake ramane in quest-urile zilnice (ai revenit asupra deciziei)
+- Nicio migrare de date — exercitiile noi pornesc cu istoric gol, restul intact
+
+---
+
+<!-- ARHIVA -->
+
 # Solo Leveling System — Deploy Instructions
 
 ## Fisiere

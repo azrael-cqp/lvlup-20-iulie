@@ -366,6 +366,13 @@ const PPL = {
       muscle: "Biceps",
       rest: 60,
       desc: "Banca la ~45 grade, bratele atarna liber. Inclinarea pre-intinde bicepsul pentru activare maxima."
+    }, {
+      name: "Cable Woodchoppers",
+      sets: "3×12-15 / parte",
+      muscle: "Core",
+      rest: 45,
+      finisher: true,
+      desc: "🎯 CORE FINISHER. Cablu sus, picioarele departate, trage diagonal de sus spre soldul opus cu bratele aproape intinse. Rotatia vine din trunchi, nu din brate. 12-15 pe fiecare parte. Flancuri sub incarcare — singurul exercitiu de core din saptamana care poate progresa cu greutate."
     }]
   },
   5: {
@@ -823,6 +830,13 @@ const BONUS_Q = [{
   icon: "🏊",
   days: [6],
   desc: "30-45 min inot ritm confortabil (NU cursa). Recuperare activa: zero impact pe articulatii, mobilitate umar, core postural."
+}, {
+  id: "padel",
+  label: "Padel",
+  stat: "AGI",
+  xp: 45,
+  icon: "🎾",
+  desc: "Tinta: 2x pe saptamana, fara zile fixe — bifezi in ziua in care ai jucat. Zona 1 la ~105 bpm, deci e NEAT, nu antrenament: nu incarca recuperarea de la forta. Doua sesiuni = ~1400 cal pe saptamana, mananca peste in zilele alea. Incalzeste gleznele si soldurile inainte — opriri bruste la 100kg. Daca se poate dimineata, mai bine: sesiunile de seara taie din somn."
 }, {
   id: "mobility",
   label: "Mobility 5 min (acasa)",
