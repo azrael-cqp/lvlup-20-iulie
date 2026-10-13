@@ -656,38 +656,45 @@ const NO_GYM = {
 };
 const DAILY_Q = [{
   id: "protein_shake1",
-  label: "Shake Whey #1 (2 scoops · 45g)",
+  label: "11:00 · Shake #1 (2 scoops) + banana + 20g unt arahide",
   stat: "VIT",
   xp: 5,
   icon: "🥤",
   subgroup: "protein"
 }, {
+  id: "protein_meat",
+  label: "14:00 · Aripioare 200g gatit",
+  stat: "VIT",
+  xp: 5,
+  icon: "🍗",
+  subgroup: "protein"
+}, {
+  id: "carbs_lunch",
+  label: "16:30 · Orez/cartofi 150g GATIT + salata cu ulei masline",
+  stat: "VIT",
+  xp: 5,
+  icon: "🍚",
+  subgroup: "protein"
+}, {
+  id: "protein_bar",
+  label: "18:30 · Baton ASAP + 30g migdale",
+  stat: "VIT",
+  xp: 5,
+  icon: "🍫",
+  subgroup: "protein"
+}, {
   id: "protein_shake2",
-  label: "Shake Whey #2 (2 scoops · 45g)",
+  label: "20:30 · Shake #2 (2 scoops)",
   stat: "VIT",
   xp: 5,
   icon: "🥤",
   subgroup: "protein"
 }, {
   id: "protein_jerky",
-  label: "Beef Jerky (50g · 22g protein)",
+  label: "20:30 · Jerky Carpathian 50g",
   stat: "VIT",
   xp: 5,
   icon: "🥩",
-  subgroup: "protein"
-}, {
-  id: "protein_bar",
-  label: "Baton ASAP (50g · 25g protein)",
-  stat: "VIT",
-  xp: 5,
-  icon: "🍫",
-  subgroup: "protein"
-}, {
-  id: "protein_meat",
-  label: "Carne 280-310g gatit (~83g protein)",
-  stat: "VIT",
-  xp: 5,
-  icon: "🍗",
   subgroup: "protein"
 }];
 
@@ -4930,13 +4937,14 @@ function App() {
     const proteinItems = DAILY_Q.filter(q => q.subgroup === "protein");
     const proteinValues = {
       protein_shake1: 45,
+      protein_meat: 36,
+      carbs_lunch: 4,
+      protein_bar: 31,
       protein_shake2: 45,
-      protein_jerky: 22,
-      protein_bar: 25,
-      protein_meat: 83
+      protein_jerky: 25
     };
     const consumed = proteinItems.filter(q => done.includes(q.id)).reduce((s, q) => s + (proteinValues[q.id] || 0), 0);
-    const target = 220;
+    const target = 180;
     const pct = Math.min(100, consumed / target * 100);
     const color = consumed >= target ? "#22c55e" : consumed >= target * 0.7 ? "#f59e0b" : "#3b82f6";
     return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
@@ -4950,7 +4958,7 @@ function App() {
         justifyContent: "space-between",
         alignItems: "center"
       }
-    }, /*#__PURE__*/React.createElement("span", null, "\u25B8 PROTEIN INTAKE"), /*#__PURE__*/React.createElement("span", {
+    }, /*#__PURE__*/React.createElement("span", null, "\u25B8 MESE ZILNICE"), /*#__PURE__*/React.createElement("span", {
       style: {
         fontSize: 10,
         color,

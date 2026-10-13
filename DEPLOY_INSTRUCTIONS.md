@@ -1,3 +1,43 @@
+# DEPLOY - update 13 oct 2026 (patch 6)
+
+## Ce s-a schimbat
+
+Sectiunea de mancare din tab-ul QUESTS a fost rescrisa pe ore, conform planului nou.
+
+### Mesele (inlocuiesc vechile 5 bife de proteina)
+| Ora | Masa | Proteina |
+|---|---|---|
+| 11:00 | Shake #1 (2 scoops) + banana + 20g unt arahide | 45g |
+| 14:00 | Aripioare 200g gatit | 36g |
+| 16:30 | Orez/cartofi 150g GATIT + salata cu ulei masline | 4g |
+| 18:30 | Baton ASAP + 30g migdale | 31g |
+| 20:30 | Shake #2 (2 scoops) | 45g |
+| 20:30 | Jerky Carpathian 50g | 25g |
+| | **Total** | **186g** |
+
+### Alte modificari
+- Tinta de proteina: **220g -> 180g** (220 era nerealist, de-aia bara nu se umplea niciodata)
+- Jerky corectat: 22g -> **25g** (valoarea reala Carpathian Original Beef)
+- Masa de carne corectata: 83g -> **36g** (vechea valoare presupunea 280-310g carne)
+- Header sectiune: "PROTEIN INTAKE" -> **"MESE ZILNICE"** (acum include si masa de carbo)
+
+## Deploy
+1. Repo **azrael-cqp/LevelupV4** pe GitHub
+2. **Drag & drop** `app.compiled.js` peste fisierul existent - NU copy-paste din iOS
+3. Commit pe main, asteapta 2-3 min, deschide in **Safari privat**
+
+## Verificare
+- Tab QUESTS -> sectiunea **MESE ZILNICE** -> 6 randuri cu ore, in ordine cronologica
+- Bifeaza-le pe toate -> bara ajunge la **186g / 180g**, verde
+- Padel si Cable Woodchoppers (patch 5) raman neatinse
+
+## Note
+- Nicio migrare de date. Bifele de azi se reseteaza oricum la miezul noptii.
+- Quest-ul nou `carbs_lunch` e singurul care nu e proteina; apare in aceeasi lista ca sa nu-l uiti.
+- In zilele cu padel: +400 kcal, cel mai simplu dublezi orezul de la 16:30.
+
+---
+
 # DEPLOY — update 12 oct 2026 (patch 5)
 
 ## Ce s-a schimbat
